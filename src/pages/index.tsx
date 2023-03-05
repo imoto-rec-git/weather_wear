@@ -2,14 +2,16 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import { css } from '@emotion/react'
+import { useRouter } from 'next/router'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
-
+  const router = useRouter()
   const Main = css`
     background-color: #A1C6EA;
     height: 100vh;
+    position: relative;
   `
   const Section = css`
     background-color: rgba(245, 245, 245, 0.4);
@@ -17,32 +19,41 @@ export default function Home() {
     height: 95%;
     margin: auto;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
     position: absolute;
     bottom: 0;
-    right: 0;
-    left: 0;
     border-radius: 80px 80px 0 0;
     box-shadow: 10px 5px 60px rgba(0, 0, 0, 0.25);
   `
+  const logoWrap = css`
+    position: absolute;
+    top: -120px;
+    bottom: 0;
+    margin: auto;
+    text-align: center;
+    height: 87px;
+  `
   const Paragraph = css`
-    margin: 0 0 170px;
+    font-size: 12px;
+    color: #287CCD;
   `
   const BtnWrap = css`
+    margin: 0 auto;
+    bottom: 20px;
+    position: absolute;
     button {
       color: #fff;
       display: block;
       margin: 0 0 18px;
       width: 300px;
       padding: 16px 0;
-      border: 1px solid #fff;
-      border-radius: 24px;
       background: linear-gradient(45deg, rgba(42,130,215,1) 0%, rgba(38,118,195,1) 100%);
+      border: 1px solid #fff;
+      border-radius: 20px;
+      cursor: pointer;
     }
   `
-  
   return (
     <>
       <Head>
@@ -53,12 +64,14 @@ export default function Home() {
       </Head>
       <main css={Main}>
         <section css={Section}>
-          <h1>
-            <Image src="/images/logo.png" alt="Weather Wear" width={197} height={56} />
-          </h1>
-          <p css={Paragraph}>今日のファッションは天気次第</p>
+          <div css={logoWrap}>
+            <h1>
+              <Image src="/images/logo.png" alt="Weather Wear" width={197} height={56} />
+            </h1>
+            <p css={Paragraph}>今日のファッションは天気次第</p>
+          </div>
           <div css={BtnWrap}>
-            <button>位置情報を取得</button>
+            <button onClick={() => router.push("/result")}>位置情報を取得</button>
             <button>都道府県を選択</button>
           </div>
         </section>
