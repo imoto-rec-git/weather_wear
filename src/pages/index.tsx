@@ -1,22 +1,18 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import { Inter } from 'next/font/google'
 import { css } from '@emotion/react'
 import { useRouter } from 'next/router'
-
-const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
   const router = useRouter()
   const Main = css`
     background-color: #A1C6EA;
-    height: 100vh;
     position: relative;
   `
   const Section = css`
     background-color: rgba(245, 245, 245, 0.4);
     width: 100%;
-    height: 95%;
+    height: 98%;
     margin: auto;
     display: flex;
     justify-content: center;
@@ -72,7 +68,7 @@ export default function Home() {
           </div>
           <div css={BtnWrap}>
             <button onClick={() => router.push("/result")}>位置情報を取得</button>
-            <button>都道府県を選択</button>
+            <button onClick={() => router.push("/pref")}>都道府県を選択</button>
           </div>
         </section>
       </main>
