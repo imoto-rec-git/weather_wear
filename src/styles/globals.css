@@ -8,11 +8,11 @@
   --font-weight-medium: 500;
   --font-weight-bold: 700;
   --color-black: #333333;
-  --color-gray: #D8D8D8;
-  --color-white: #FFFFFF;
-  --color-blue: #287CCD;
-  --color-light-blue: #A1C6EA;
-  --color-orange: #FF6921;
+  --color-gray: #d8d8d8;
+  --color-white: #ffffff;
+  --color-blue: #287ccd;
+  --color-light-blue: #a1c6ea;
+  --color-orange: #ff6921;
 }
 
 *,
@@ -22,7 +22,6 @@
   padding: 0;
   margin: 0;
 }
-
 
 html,
 body {
@@ -44,4 +43,9 @@ body {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+img {
+  width: 100%;
+  height: auto;
 }
