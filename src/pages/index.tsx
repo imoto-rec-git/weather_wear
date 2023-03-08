@@ -1,13 +1,13 @@
-import Head from 'next/head';
-import Image from 'next/image';
-import { css } from '@emotion/react';
-import { useRouter } from 'next/router';
+import Head from "next/head"
+import Image from "next/image"
+import { css } from "@emotion/react"
+import { useRouter } from "next/router"
 
 export default function Home() {
-  const router = useRouter();
+  const router = useRouter()
   const Main = css`
     background-color: #a1c6ea;
-  `;
+  `
   const Section = css`
     background-color: rgba(245, 245, 245, 0.4);
     width: calc(100% - 20px);
@@ -22,7 +22,7 @@ export default function Home() {
     align-items: center;
     border-radius: 12px;
     box-shadow: 10px 5px 60px rgba(0, 0, 0, 0.25);
-  `;
+  `
   const logoWrap = css`
     position: absolute;
     top: -120px;
@@ -31,11 +31,11 @@ export default function Home() {
     text-align: center;
     width: 197px;
     height: 87px;
-  `;
+  `
   const Paragraph = css`
     font-size: 12px;
     color: #287ccd;
-  `;
+  `
   const BtnWrap = css`
     margin: 0 auto;
     bottom: 20px;
@@ -55,7 +55,7 @@ export default function Home() {
       border-radius: 24px;
       cursor: pointer;
     }
-  `;
+  `
 
   return (
     <>
@@ -79,13 +79,13 @@ export default function Home() {
             <p css={Paragraph}>今日のファッションは天気次第</p>
           </div>
           <div css={BtnWrap}>
-            <button onClick={() => router.push('/result')}>
+            <button onClick={() => router.push("/result")}>
               位置情報を取得
             </button>
-            <button onClick={() => router.push('/pref')}>都道府県を選択</button>
+            <button onClick={() => router.push("/pref")}>都道府県を選択</button>
           </div>
         </section>
       </main>
     </>
-  );
+  )
 }

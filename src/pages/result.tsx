@@ -1,33 +1,33 @@
-import { useState, useEffect } from 'react';
-import Head from 'next/head';
-import Image from 'next/image';
-import { css } from '@emotion/react';
-import { useRouter } from 'next/router';
-import axios from 'axios';
+import { useState, useEffect } from "react"
+import Head from "next/head"
+import Image from "next/image"
+import { css } from "@emotion/react"
+import { useRouter } from "next/router"
+import axios from "axios"
 
 const result = () => {
-  const [posts, setPosts] = useState(null);
+  const [posts, setPosts] = useState(null)
 
   useEffect(() => {
     axios
-      .get('https://www.jma.go.jp/bosai/forecast/data/forecast/270000.json')
+      .get("https://www.jma.go.jp/bosai/forecast/data/forecast/270000.json")
       .then((res) => {
-        setPosts(res.data);
+        setPosts(res.data)
       })
       .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+        console.log(err)
+      })
+  }, [])
 
   if (!posts) {
-    return null;
+    return null
   }
 
-  const router = useRouter();
+  const router = useRouter()
 
   const Main = css`
     background-color: #a1c6ea;
-  `;
+  `
   const Section = css`
     background-color: rgba(245, 245, 245, 0.4);
     width: 96%;
@@ -40,26 +40,26 @@ const result = () => {
     border-radius: 10px;
     box-shadow: 10px 5px 60px rgba(0, 0, 0, 0.25);
     padding: 20px;
-  `;
+  `
   const ImageWrap = css`
     width: 100%;
     height: auto;
     background: #e7f1fb;
     border-radius: 50px 133px 128px 151px / 214px 72px 72px 51px;
     margin: 0 0 12px;
-  `;
+  `
   const WearComment = css`
     font-size: var(--font-size-medium);
     margin: 0 0 20px;
-  `;
+  `
   const WeatherDetail = css`
     margin: 0 0 20px;
-  `;
+  `
   const Area = css`
     text-align: center;
     font-size: var(--font-size-small);
     margin: 0 0 4px;
-  `;
+  `
   const Climate = css`
     font-size: var(--font-size-small);
     text-align: center;
@@ -69,7 +69,7 @@ const result = () => {
       font-size: 2.4rem;
       margin: 0 0 0 8px;
     }
-  `;
+  `
   const Temp = css`
     font-size: var(--font-size-medium);
     list-style: none;
@@ -90,7 +90,7 @@ const result = () => {
         margin: 0 0 0 0.8rem;
       }
     }
-  `;
+  `
   const BtnWrap = css`
     min-width: 320px;
     margin: 0 auto;
@@ -109,14 +109,14 @@ const result = () => {
       border-radius: 24px;
       cursor: pointer;
     }
-  `;
+  `
   const Graph = css`
     width: 100%;
     height: 132px;
     background: rgba(245, 245, 245, 0.2);
     margin: 0 0 2.6rem;
     border-radius: 0.8rem;
-  `;
+  `
   return (
     <>
       <Head>
@@ -161,12 +161,12 @@ const result = () => {
             <div css={Graph}></div>
           </div>
           <div css={BtnWrap}>
-            <button onClick={() => router.push('/')}>TOP</button>
+            <button onClick={() => router.push("/")}>TOP</button>
           </div>
         </section>
       </main>
     </>
-  );
-};
+  )
+}
 
-export default result;
+export default result
