@@ -1,39 +1,41 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import { css } from '@emotion/react'
-import { useRouter } from 'next/router'
+import Head from 'next/head';
+import Image from 'next/image';
+import { css } from '@emotion/react';
+import { useRouter } from 'next/router';
 
 export default function Home() {
-  const router = useRouter()
+  const router = useRouter();
   const Main = css`
-    background-color: #A1C6EA;
-    position: relative;
-  `
+    background-color: #a1c6ea;
+  `;
   const Section = css`
     background-color: rgba(245, 245, 245, 0.4);
-    width: 100%;
-    height: 98%;
-    margin: auto;
+    width: calc(100% - 20px);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 10px auto;
     display: flex;
     justify-content: center;
     align-items: center;
-    position: absolute;
-    bottom: 0;
-    border-radius: 80px 80px 0 0;
+    border-radius: 12px;
     box-shadow: 10px 5px 60px rgba(0, 0, 0, 0.25);
-  `
+  `;
   const logoWrap = css`
     position: absolute;
     top: -120px;
     bottom: 0;
     margin: auto;
     text-align: center;
+    width: 197px;
     height: 87px;
-  `
+  `;
   const Paragraph = css`
     font-size: 12px;
-    color: #287CCD;
-  `
+    color: #287ccd;
+  `;
   const BtnWrap = css`
     margin: 0 auto;
     bottom: 20px;
@@ -43,13 +45,18 @@ export default function Home() {
       display: block;
       margin: 0 0 18px;
       width: 300px;
-      padding: 16px 0;
-      background: linear-gradient(45deg, rgba(42,130,215,1) 0%, rgba(38,118,195,1) 100%);
+      padding: 19px 0;
+      background: linear-gradient(
+        45deg,
+        rgba(42, 130, 215, 1) 0%,
+        rgba(38, 118, 195, 1) 100%
+      );
       border: 1px solid #fff;
-      border-radius: 20px;
+      border-radius: 24px;
       cursor: pointer;
     }
-  `
+  `;
+
   return (
     <>
       <Head>
@@ -62,16 +69,23 @@ export default function Home() {
         <section css={Section}>
           <div css={logoWrap}>
             <h1>
-              <Image src="/images/logo.png" alt="Weather Wear" width={197} height={56} />
+              <Image
+                src="/images/logo.png"
+                alt="Weather Wear"
+                width={197}
+                height={56}
+              />
             </h1>
             <p css={Paragraph}>今日のファッションは天気次第</p>
           </div>
           <div css={BtnWrap}>
-            <button onClick={() => router.push("/result")}>位置情報を取得</button>
-            <button onClick={() => router.push("/pref")}>都道府県を選択</button>
+            <button onClick={() => router.push('/result')}>
+              位置情報を取得
+            </button>
+            <button onClick={() => router.push('/pref')}>都道府県を選択</button>
           </div>
         </section>
       </main>
     </>
-  )
+  );
 }
