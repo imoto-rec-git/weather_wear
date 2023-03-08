@@ -1,10 +1,42 @@
 import Head from 'next/head';
 import { css } from '@emotion/react';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 
-export default function Home() {
+const Pref = () => {
   const router = useRouter();
+  const prefList = (
+    [
+      {
+        'area': '北海道・東北',
+        'list': ['北海道', '青森県', '岩手県', '宮城県', '秋田県', '山形県', '福島県'],
+      },
+      {
+        'area': '関東',
+        'list': ['茨城県', '栃木県', '群馬県', '埼玉県', '千葉県', '東京都', '神奈川県'],
+      },
+      {
+        'area': '中部',
+        'list': ['新潟県', '富山県', '石川県', '福井県', '山梨県', '長野県', '岐阜県', '静岡県', '愛知県'],
+      },
+      {
+        'area': '近畿',
+        'list': ['三重県', '滋賀県', '京都府', '大阪府', '兵庫県', '奈良県', '和歌山県'],
+      },
+      {
+        'area': '中国',
+        'list': ['鳥取県', '島根県', '岡山県', '広島県', '山口県'],
+      },
+      {
+        'area': '四国',
+        'list': ['徳島県', '香川県', '愛媛県', '高知県'],
+      },
+      {
+        'area': '九州',
+        'list': ['福岡県', '佐賀県', '長崎県', '熊本県', '大分県', '宮崎県', '鹿児島県', '沖縄県'],
+      },
+    ]
+  );
+
   const Main = css`
     background-color: var(--color-light-blue);
     position: relative;
@@ -75,42 +107,6 @@ export default function Home() {
     }
   `;
 
-  const [prefList, setPrefList] = useState([
-    '北海道・東北',
-    ['北海道', '青森県', '岩手県', '宮城県', '秋田県', '山形県', '福島県'],
-    '関東',
-    ['茨城県', '栃木県', '群馬県', '埼玉県', '千葉県', '東京都', '神奈川県'],
-    '中部',
-    [
-      '新潟県',
-      '富山県',
-      '石川県',
-      '福井県',
-      '山梨県',
-      '長野県',
-      '岐阜県',
-      '静岡県',
-      '愛知県',
-    ],
-    '近畿',
-    ['三重県', '滋賀県', '京都府', '大阪府', '兵庫県', '奈良県', '和歌山県'],
-    '中国',
-    ['鳥取県', '島根県', '岡山県', '広島県', '山口県'],
-    '四国',
-    ['徳島県', '香川県', '愛媛県', '高知県'],
-    '九州',
-    [
-      '福岡県',
-      '佐賀県',
-      '長崎県',
-      '熊本県',
-      '大分県',
-      '宮崎県',
-      '鹿児島県',
-      '沖縄県',
-    ],
-  ]);
-
   return (
     <>
       <Head>
@@ -123,138 +119,25 @@ export default function Home() {
         <section css={Section}>
           <p css={Note}>都道府県を１つ選択してください</p>
           <form>
-            {prefList.map((prefItem: string, index: number) => (
-              <>{prefItem}</>
-            ))}
-            <div css={PrefWrapper}>
-              <p>北海道・東北</p>
-              <div css={PrefDivision}>
-                <input type="radio" name="pref" id="pref_1" />
-                <label htmlFor="pref_1" onClick={() => router.push('/result')}>
-                  北海道
-                </label>
-                <input type="radio" name="pref" id="pref_2" />
-                <label htmlFor="pref_2">青森</label>
-                <input type="radio" name="pref" id="pref_3" />
-                <label htmlFor="pref_3">岩手</label>
-                <input type="radio" name="pref" id="pref_4" />
-                <label htmlFor="pref_4">秋田</label>
-                <input type="radio" name="pref" id="pref_5" />
-                <label htmlFor="pref_5">宮城</label>
-                <input type="radio" name="pref" id="pref_6" />
-                <label htmlFor="pref_6">山形</label>
-                <input type="radio" name="pref" id="pref_7" />
-                <label htmlFor="pref_7">福島</label>
-              </div>
-            </div>
-            <div css={PrefWrapper}>
-              <p>関東</p>
-              <div css={PrefDivision}>
-                <input type="radio" name="pref" id="pref_8" />
-                <label htmlFor="pref_8">茨城</label>
-                <input type="radio" name="pref" id="pref_9" />
-                <label htmlFor="pref_9">栃木</label>
-                <input type="radio" name="pref" id="pref_10" />
-                <label htmlFor="pref_10">群馬</label>
-                <input type="radio" name="pref" id="pref_11" />
-                <label htmlFor="pref_11">埼玉</label>
-                <input type="radio" name="pref" id="pref_12" />
-                <label htmlFor="pref_12">千葉</label>
-                <input type="radio" name="pref" id="pref_13" />
-                <label htmlFor="pref_13">東京</label>
-                <input type="radio" name="pref" id="pref_14" />
-                <label htmlFor="pref_14">神奈川</label>
-              </div>
-            </div>
-            <div css={PrefWrapper}>
-              <p>中部</p>
-              <div css={PrefDivision}>
-                <input type="radio" name="pref" id="pref_15" />
-                <label htmlFor="pref_15">新潟</label>
-                <input type="radio" name="pref" id="pref_16" />
-                <label htmlFor="pref_16">富山</label>
-                <input type="radio" name="pref" id="pref_17" />
-                <label htmlFor="pref_17">石川</label>
-                <input type="radio" name="pref" id="pref_18" />
-                <label htmlFor="pref_18">福井</label>
-                <input type="radio" name="pref" id="pref_19" />
-                <label htmlFor="pref_19">長野</label>
-                <input type="radio" name="pref" id="pref_20" />
-                <label htmlFor="pref_20">山梨</label>
-                <input type="radio" name="pref" id="pref_21" />
-                <label htmlFor="pref_21">岐阜</label>
-                <input type="radio" name="pref" id="pref_22" />
-                <label htmlFor="pref_22">静岡</label>
-                <input type="radio" name="pref" id="pref_23" />
-                <label htmlFor="pref_23">愛知</label>
-              </div>
-            </div>
-            <div css={PrefWrapper}>
-              <p>近畿</p>
-              <div css={PrefDivision}>
-                <input type="radio" name="pref" id="pref_24" />
-                <label htmlFor="pref_24">滋賀</label>
-                <input type="radio" name="pref" id="pref_25" />
-                <label htmlFor="pref_25">京都</label>
-                <input type="radio" name="pref" id="pref_26" />
-                <label htmlFor="pref_26">大阪</label>
-                <input type="radio" name="pref" id="pref_27" />
-                <label htmlFor="pref_27">兵庫</label>
-                <input type="radio" name="pref" id="pref_28" />
-                <label htmlFor="pref_28">奈良</label>
-                <input type="radio" name="pref" id="pref_29" />
-                <label htmlFor="pref_29">和歌山</label>
-              </div>
-            </div>
-            <div css={PrefWrapper}>
-              <p>中国</p>
-              <div css={PrefDivision}>
-                <input type="radio" name="pref" id="pref_30" />
-                <label htmlFor="pref_30">鳥取</label>
-                <input type="radio" name="pref" id="pref_31" />
-                <label htmlFor="pref_31">島根</label>
-                <input type="radio" name="pref" id="pref_32" />
-                <label htmlFor="pref_32">岡山</label>
-                <input type="radio" name="pref" id="pref_33" />
-                <label htmlFor="pref_33">広島</label>
-                <input type="radio" name="pref" id="pref_34" />
-                <label htmlFor="pref_34">山口</label>
-              </div>
-            </div>
-            <div css={PrefWrapper}>
-              <p>四国</p>
-              <div css={PrefDivision}>
-                <input type="radio" name="pref" id="pref_35" />
-                <label htmlFor="pref_35">徳島</label>
-                <input type="radio" name="pref" id="pref_36" />
-                <label htmlFor="pref_36">香川</label>
-                <input type="radio" name="pref" id="pref_37" />
-                <label htmlFor="pref_37">愛媛</label>
-                <input type="radio" name="pref" id="pref_38" />
-                <label htmlFor="pref_38">高知</label>
-              </div>
-            </div>
-            <div css={PrefWrapper}>
-              <p>九州</p>
-              <div css={PrefDivision}>
-                <input type="radio" name="pref" id="pref_39" />
-                <label htmlFor="pref_39">福岡</label>
-                <input type="radio" name="pref" id="pref_40" />
-                <label htmlFor="pref_40">佐賀</label>
-                <input type="radio" name="pref" id="pref_41" />
-                <label htmlFor="pref_41">長崎</label>
-                <input type="radio" name="pref" id="pref_42" />
-                <label htmlFor="pref_42">熊本</label>
-                <input type="radio" name="pref" id="pref_43" />
-                <label htmlFor="pref_43">大分</label>
-                <input type="radio" name="pref" id="pref_44" />
-                <label htmlFor="pref_44">宮崎</label>
-                <input type="radio" name="pref" id="pref_45" />
-                <label htmlFor="pref_45">鹿児島</label>
-                <input type="radio" name="pref" id="pref_46" />
-                <label htmlFor="pref_46">沖縄</label>
-              </div>
-            </div>
+            {prefList.map((region) => {
+              return (
+                <>
+                  <div css={PrefWrapper}>
+                    <p key={region.area}>{region.area}</p>
+                    <div css={PrefDivision}>
+                      {region.list.map((name, index) => {
+                        return (
+                          <>
+                            <input key={index} type="radio" id={name} />
+                            <label htmlFor={name} key={name} onClick={()=> router.push('/result')}>{name}</label>
+                          </>
+                        )
+                      })}
+                    </div>
+                  </div>
+                </>
+              )
+            })}
           </form>
           <div css={BtnWrap}>
             <button onClick={() => router.push('/')}>TOPへ</button>
@@ -264,3 +147,5 @@ export default function Home() {
     </>
   );
 }
+
+export default Pref
