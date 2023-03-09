@@ -21,11 +21,28 @@ const result = () => {
   //     });
   // }, []);
 
-  // https://api.open-meteo.com/v1/forecast?latitude=変更部分（緯度）&longitude=変更部分（経度）&hourly=temperature_2m,weathercode
-
   // if (!posts) {
   //   return null;
   // }
+
+  // https://api.open-meteo.com/v1/forecast?latitude=変更部分（緯度）&longitude=変更部分（経度）&hourly=temperature_2m,weathercode
+
+  useEffect(() => {
+    axios
+      .get(
+        'https://api.open-meteo.com/v1/forecast?latitude=34.69&longitude=135.50&hourly=temperature_2m,weathercode'
+      )
+      .then((res) => {
+        setPosts(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+  if (!posts) {
+    return null;
+  }
+  console.log(posts.latitude);
 
   const router = useRouter();
 
