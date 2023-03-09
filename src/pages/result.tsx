@@ -23,9 +23,9 @@ const result = () => {
 
   // https://api.open-meteo.com/v1/forecast?latitude=変更部分（緯度）&longitude=変更部分（経度）&hourly=temperature_2m,weathercode
 
-  if (!posts) {
-    return null;
-  }
+  // if (!posts) {
+  //   return null;
+  // }
 
   const router = useRouter();
 
