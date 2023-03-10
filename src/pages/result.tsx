@@ -42,7 +42,17 @@ const result = () => {
   if (!posts) {
     return null;
   }
-  console.log(posts.latitude);
+  const temp_arr = [...posts.hourly.temperature_2m.slice(0, 24)]; // 気温
+  const max_val = Math.max(...temp_arr);
+  console.log(max_val);
+  const min_val = Math.min(...temp_arr);
+  console.log(min_val);
+
+  const time_arr = [...posts.hourly.time.slice(0, 24)]; // 時間
+  const wc_arr = [...posts.hourly.weathercode.slice(0, 24)]; // ウェザーコード
+  // console.log(temp_arr);
+  // console.log(time_arr);
+  // console.log(wc_arr);
 
   const router = useRouter();
 
