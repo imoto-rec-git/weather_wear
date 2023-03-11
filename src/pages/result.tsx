@@ -1,64 +1,94 @@
-import { useState, useEffect } from 'react';
-import Head from 'next/head';
-import Image from 'next/image';
-import { css } from '@emotion/react';
-import { useRouter } from 'next/router';
-import axios from 'axios';
+import { useState, useEffect } from "react"
+import Head from "next/head"
+import Image from "next/image"
+import { css } from "@emotion/react"
+import { useRouter } from "next/router"
+import axios from "axios"
 
 const result = () => {
-  //都道府県を選んだ場合、緯度経度を取得
-  //必要なデータは、今日の毎時・毎時の気温・ウェザーコード
-  const [posts, setPosts] = useState(null);
+  const [posts, setPosts] = useState(null)
+  const [area, setArea] = useState(null)
+  const [tempList, setTempList] = useState([])
+  const [maxVal, setMaxVal] = useState(null)
+  const [minVal, setMinVal] = useState(null)
+  const [wcArr, setWcArr] = useState([])
+  const [wc, setWc] = useState(null)
+  const [wt, setWt] = useState(null)
 
-  // useEffect(() => {
-  //   axios
-  //     .get('https://www.jma.go.jp/bosai/forecast/data/forecast/270000.json')
-  //     .then((res) => {
-  //       setPosts(res.data);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, []);
-
-  // if (!posts) {
-  //   return null;
-  // }
-
-  // https://api.open-meteo.com/v1/forecast?latitude=変更部分（緯度）&longitude=変更部分（経度）&hourly=temperature_2m,weathercode
+  const router = useRouter()
 
   useEffect(() => {
     axios
       .get(
-        'https://api.open-meteo.com/v1/forecast?latitude=34.69&longitude=135.50&hourly=temperature_2m,weathercode'
+        "https://api.open-meteo.com/v1/forecast?latitude=34.69&longitude=135.50&hourly=temperature_2m,weathercode"
       )
       .then((res) => {
-        setPosts(res.data);
+        setPosts(res.data)
       })
       .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-  if (!posts) {
-    return null;
+        console.log(err)
+      })
+  }, [])
+
+  const mostValue = (arr) => {
+    let freq = {}
+    for (let i = 0; i < arr.length; i++) {
+      let el = arr[i]
+      if (freq[el]) {
+        freq[el]++
+      } else {
+        freq[el] = 1
+      }
+    }
+
+    let maxFreq = 0
+    let mode = null
+    for (let el in freq) {
+      if (freq[el] > maxFreq) {
+        maxFreq = freq[el]
+        mode = el
+      }
+    }
+    return mode
   }
-  const temp_arr = [...posts.hourly.temperature_2m.slice(0, 24)]; // 気温
-  const max_val = Math.max(...temp_arr);
-  console.log(max_val);
-  const min_val = Math.min(...temp_arr);
-  console.log(min_val);
 
-  const time_arr = [...posts.hourly.time.slice(0, 24)]; // 時間
-  const wc_arr = [...posts.hourly.weathercode.slice(0, 24)]; // ウェザーコード
-  // console.log(temp_arr);
-  // console.log(time_arr);
-  // console.log(wc_arr);
+  const weatherText = (code) => {
+    if (code == 0 || code == 1) {
+      setWt("晴れ")
+    } else if (code == 2 || code == 3) {
+      setWt("晴れときどき曇り")
+    } else if (
+      code == 61 ||
+      code == 63 ||
+      code == 65 ||
+      code == 66 ||
+      code == 67
+    ) {
+      setWt("雨")
+    } else {
+      setWt("-")
+    }
+  }
 
-  const router = useRouter();
+  useEffect(() => {
+    if (posts) {
+      setArea("大阪府")
+      const temp_arr = [...posts.hourly.temperature_2m.slice(0, 24)] // 気温
+      setTempList(temp_arr)
+      const max_val = Math.max(...temp_arr)
+      setMaxVal(max_val)
+      const min_val = Math.min(...temp_arr)
+      setMinVal(min_val)
+      const wc_arr = [...posts.hourly.weathercode.slice(0, 24)] // ウェザーコード
+      setWcArr(wc_arr)
+      setWc(mostValue(wc_arr))
+      weatherText(mostValue(wc_arr))
+    }
+  }, [posts])
 
   const Main = css`
     background-color: #a1c6ea;
-  `;
+  `
   const Section = css`
     background-color: rgba(245, 245, 245, 0.4);
     width: 96%;
@@ -71,26 +101,26 @@ const result = () => {
     border-radius: 10px;
     box-shadow: 10px 5px 60px rgba(0, 0, 0, 0.25);
     padding: 20px;
-  `;
+  `
   const ImageWrap = css`
     width: 100%;
     height: auto;
     background: #e7f1fb;
     border-radius: 50px 133px 128px 151px / 214px 72px 72px 51px;
     margin: 0 0 12px;
-  `;
+  `
   const WearComment = css`
     font-size: var(--font-size-medium);
     margin: 0 0 20px;
-  `;
+  `
   const WeatherDetail = css`
     margin: 0 0 20px;
-  `;
+  `
   const Area = css`
     text-align: center;
     font-size: var(--font-size-small);
     margin: 0 0 4px;
-  `;
+  `
   const Climate = css`
     font-size: var(--font-size-small);
     text-align: center;
@@ -100,7 +130,7 @@ const result = () => {
       font-size: 2.4rem;
       margin: 0 0 0 8px;
     }
-  `;
+  `
   const Temp = css`
     font-size: var(--font-size-medium);
     list-style: none;
@@ -109,11 +139,11 @@ const result = () => {
     justify-content: center;
     align-items: center;
     li {
-      &:first-child {
+      &:first-of-type {
         margin: 0 22px 0 0;
         color: var(--color-orange);
       }
-      &:last-child {
+      &:last-of-type {
         color: var(--color-blue);
       }
       span {
@@ -121,7 +151,7 @@ const result = () => {
         margin: 0 0 0 0.8rem;
       }
     }
-  `;
+  `
   const BtnWrap = css`
     min-width: 320px;
     margin: 0 auto;
@@ -140,14 +170,14 @@ const result = () => {
       border-radius: 24px;
       cursor: pointer;
     }
-  `;
+  `
   const Graph = css`
     width: 100%;
     height: 132px;
     background: rgba(245, 245, 245, 0.2);
     margin: 0 0 2.6rem;
     border-radius: 0.8rem;
-  `;
+  `
   return (
     <>
       <Head>
@@ -163,6 +193,7 @@ const result = () => {
               <Image
                 src="/images/result_wear.svg"
                 alt="Weather Wear"
+                priority={true}
                 width={320}
                 height={325}
               />
@@ -173,35 +204,42 @@ const result = () => {
               今日も一日がんばりましょう！
             </p>
             <div css={WeatherDetail}>
-              {/* <p css={Area}>{posts[0].timeSeries[0].areas[0].area.name}</p> */}
-              <p css={Area}>大阪府</p>
+              <p css={Area}>{area}</p>
               <p css={Climate}>
                 今日の天気は
-                {/* <span>{posts[0].timeSeries[0].areas[0].weathers[0]}</span> */}
-                <span>晴れのち曇り</span>
+                <span>{wt}</span>
               </p>
               <ul css={Temp}>
                 <li>
                   最高気温
-                  {/* <span>{posts[0].timeSeries[2].areas[0].temps[1]}°</span> */}
-                  <span>12°</span>
+                  <span>{maxVal}°</span>
                 </li>
                 <li>
                   最低気温
-                  {/* <span>{posts[0].timeSeries[2].areas[0].temps[0]}°</span> */}
-                  <span>5°</span>
+                  <span>{minVal}°</span>
                 </li>
               </ul>
             </div>
-            <div css={Graph}></div>
+            <div css={Graph}>
+              <p>気温一覧</p>
+              <ul>
+                {tempList.map((temp, index) => {
+                  return (
+                    <>
+                      <li key={index}>{temp}</li>
+                    </>
+                  )
+                })}
+              </ul>
+            </div>
           </div>
           <div css={BtnWrap}>
-            <button onClick={() => router.push('/')}>TOP</button>
+            <button onClick={() => router.push("/")}>TOP</button>
           </div>
         </section>
       </main>
     </>
-  );
-};
+  )
+}
 
-export default result;
+export default result
