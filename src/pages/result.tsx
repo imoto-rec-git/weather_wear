@@ -16,12 +16,12 @@ const result = () => {
   const [wt, setWt] = useState(null)
 
   const router = useRouter()
-  const selectedPrefecture = router.query.pref
+  const { pref, lat, lng } = router.query
 
   useEffect(() => {
     axios
       .get(
-        "https://api.open-meteo.com/v1/forecast?latitude=34.69&longitude=135.50&hourly=temperature_2m,weathercode"
+        `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&hourly=temperature_2m,weathercode`
       )
       .then((res) => {
         setPosts(res.data)
@@ -73,7 +73,7 @@ const result = () => {
 
   useEffect(() => {
     if (posts) {
-      setArea(selectedPrefecture)
+      setArea(pref)
       const temp_arr = [...posts.hourly.temperature_2m.slice(0, 24)] // 気温
       setTempList(temp_arr)
       const max_val = Math.max(...temp_arr)
@@ -231,7 +231,7 @@ const result = () => {
                 {tempList.map((temp, index) => {
                   return (
                     <>
-                      <li key={index}>{temp}</li>
+                      <li key={`temp-${index}`}>{temp}</li>
                     </>
                   )
                 })}
