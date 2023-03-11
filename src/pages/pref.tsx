@@ -1,9 +1,17 @@
 import Head from "next/head"
 import { css } from "@emotion/react"
-import { useRouter } from "next/router"
+import { withRouter } from "next/router"
+import { useState } from "react"
 
-const Pref = () => {
-  const router = useRouter()
+const Pref = ({ router }) => {
+  const [selectedPrefecture, setSelectedPrefecture] = useState("")
+
+  const hendlePrefectureSelect = (event) => {
+    const selectedPrefecture = event.target.value
+    setSelectedPrefecture(selectedPrefecture)
+    router.push(`/result?pref=${selectedPrefecture}`)
+  }
+
   const prefList = [
     {
       area: "北海道・東北",
@@ -159,33 +167,25 @@ const Pref = () => {
       <main css={Main}>
         <section css={Section}>
           <p css={Note}>都道府県を１つ選択してください</p>
-          <form>
-            {prefList.map((region) => {
-              return (
-                <>
-                  <div css={PrefWrapper}>
-                    <p key={region.area}>{region.area}</p>
-                    <div css={PrefDivision}>
-                      {region.list.map((name, index) => {
-                        return (
-                          <>
-                            <input key={index} type="radio" id={name} />
-                            <label
-                              htmlFor={name}
-                              key={name}
-                              onClick={() => router.push("/result")}
-                            >
-                              {name}
-                            </label>
-                          </>
-                        )
-                      })}
-                    </div>
-                  </div>
-                </>
-              )
-            })}
-          </form>
+          {prefList.map((pref, index) => (
+            <div key={`pref-${index}`} css={PrefWrapper}>
+              <p>{pref.area}</p>
+              <div css={PrefDivision}>
+                {pref.list.map((item, index) => (
+                  <label key={`pref-${index}-item`} htmlFor={item}>
+                    <input
+                      type="radio"
+                      name="pref"
+                      value={item}
+                      id={item}
+                      onChange={hendlePrefectureSelect}
+                    />
+                    {item}
+                  </label>
+                ))}
+              </div>
+            </div>
+          ))}
           <div css={BtnWrap}>
             <button onClick={() => router.push("/")}>TOPへ</button>
           </div>
@@ -195,4 +195,4 @@ const Pref = () => {
   )
 }
 
-export default Pref
+export default withRouter(Pref)

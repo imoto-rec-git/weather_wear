@@ -16,6 +16,7 @@ const result = () => {
   const [wt, setWt] = useState(null)
 
   const router = useRouter()
+  const selectedPrefecture = router.query.pref
 
   useEffect(() => {
     axios
@@ -72,7 +73,7 @@ const result = () => {
 
   useEffect(() => {
     if (posts) {
-      setArea("大阪府")
+      setArea(selectedPrefecture)
       const temp_arr = [...posts.hourly.temperature_2m.slice(0, 24)] // 気温
       setTempList(temp_arr)
       const max_val = Math.max(...temp_arr)
@@ -204,7 +205,11 @@ const result = () => {
               今日も一日がんばりましょう！
             </p>
             <div css={WeatherDetail}>
-              <p css={Area}>{area}</p>
+              {area && (
+                <div css={Area}>
+                  <p>{area}</p>
+                </div>
+              )}
               <p css={Climate}>
                 今日の天気は
                 <span>{wt}</span>
