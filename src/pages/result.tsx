@@ -14,6 +14,8 @@ const result = () => {
   const [wcArr, setWcArr] = useState([])
   const [wc, setWc] = useState(null)
   const [wt, setWt] = useState(null)
+  const [wearJudgeImg, setWearJudgeImg] = useState(null)
+  const [wearJudgeTxt, setWearJudgeTxt] = useState(null)
 
   const router = useRouter()
   const { pref, lat, lng } = router.query
@@ -57,7 +59,7 @@ const result = () => {
     if (code == 0 || code == 1) {
       setWt("晴れ")
     } else if (code == 2 || code == 3) {
-      setWt("晴れときどき曇り")
+      setWt("晴れのち曇り")
     } else if (
       code == 61 ||
       code == 63 ||
@@ -71,19 +73,53 @@ const result = () => {
     }
   }
 
+  const wearImgJudge = (maxTemp) => {
+    if (maxTemp >= 25) {
+      setWearJudgeImg("/images/result_1.png")
+    } else if (maxTemp >= 16) {
+      setWearJudgeImg("/images/result_2.png")
+    } else if (maxTemp >= 8) {
+      setWearJudgeImg("/images/result_3.png")
+    } else {
+      setWearJudgeImg("/images/result_4.png")
+    }
+  }
+
+  const wearTxtJudge = (maxTemp) => {
+    if (maxTemp >= 25) {
+      setWearJudgeTxt(
+        "日差しが暑く、歩くだけで汗ばみがちです。半袖など快適な服装がおすすめです。"
+      )
+    } else if (maxTemp >= 16) {
+      setWearJudgeTxt(
+        "風が吹くと少し涼しく感じるかもしれません。上着は要らず長袖シャツなどで十分です。"
+      )
+    } else if (maxTemp >= 8) {
+      setWearJudgeTxt(
+        "風が吹くと寒く感じます。トレンチコートや厚手のニットなどおすすめです。"
+      )
+    } else {
+      setWearJudgeTxt(
+        "冬を感じる冷たい空気です。場合によって肌が痛くなる寒さなので、冬物コートや厚手のダウンがおすすめです。"
+      )
+    }
+  }
+
   useEffect(() => {
     if (posts) {
       setArea(pref)
-      const temp_arr = [...posts.hourly.temperature_2m.slice(0, 24)] // 気温
+      const temp_arr = [...posts.hourly.temperature_2m.slice(0, 24)]
       setTempList(temp_arr)
       const max_val = Math.max(...temp_arr)
       setMaxVal(max_val)
       const min_val = Math.min(...temp_arr)
       setMinVal(min_val)
-      const wc_arr = [...posts.hourly.weathercode.slice(0, 24)] // ウェザーコード
+      const wc_arr = [...posts.hourly.weathercode.slice(0, 24)]
       setWcArr(wc_arr)
       setWc(mostValue(wc_arr))
       weatherText(mostValue(wc_arr))
+      wearImgJudge(max_val)
+      wearTxtJudge(max_val)
     }
   }, [posts])
 
@@ -93,7 +129,7 @@ const result = () => {
   const Section = css`
     background-color: rgba(245, 245, 245, 0.4);
     width: 96%;
-    height: auto;
+    min-height: 100vh;
     top: 0;
     bottom: 0;
     left: 0;
@@ -103,11 +139,9 @@ const result = () => {
     box-shadow: 10px 5px 60px rgba(0, 0, 0, 0.25);
     padding: 20px;
   `
-  const ImageWrap = css`
+  const WearImg = css`
     width: 100%;
     height: auto;
-    background: #e7f1fb;
-    border-radius: 50px 133px 128px 151px / 214px 72px 72px 51px;
     margin: 0 0 12px;
   `
   const WearComment = css`
@@ -158,7 +192,7 @@ const result = () => {
     margin: 0 auto;
     bottom: 20px;
     button {
-      width: 100%;
+      width: calc(100% - 2px);
       color: var(--color-white);
       display: block;
       padding: 19px 0;
@@ -167,9 +201,48 @@ const result = () => {
         rgba(42, 130, 215, 1) 0%,
         rgba(38, 118, 195, 1) 100%
       );
-      border: 1px solid #fff;
+      border: none;
       border-radius: 24px;
       cursor: pointer;
+      position: relative;
+      z-index: 1;
+      &::before {
+        content: "";
+        z-index: -1;
+        position: absolute;
+        top: -1px;
+        right: 0px;
+        bottom: 0px;
+        left: -1px;
+        background: linear-gradient(
+          135deg,
+          rgba(231, 241, 251, 1) 0%,
+          rgba(194, 204, 215, 1) 100%
+        );
+        -webkit-transform: translate3d(0px, 0px, 0) scale(1.06);
+        -moz-transform: translate3d(0px, 0px, 0) scale(1.06);
+        -ms-transform: translate3d(0px, 0px, 0) scale(1.06);
+        transform: translate3d(0, 0, 0) scale(1);
+        -webkit-filter: blur(0px);
+        filter: blur(0px);
+        opacity: var(1);
+        -webkit-transition: opacity 0.3s;
+        transition: opacity 0.3s;
+        border-radius: inherit;
+        width: 100%;
+        height: 55px;
+      }
+      &::after {
+        content: "";
+        z-index: -1;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0px;
+        left: 0;
+        background: inherit;
+        border-radius: inherit;
+      }
     }
   `
   const Graph = css`
@@ -190,17 +263,24 @@ const result = () => {
       <main css={Main}>
         <section css={Section}>
           <div>
-            <div css={ImageWrap}>
-              <Image
-                src="/images/result_wear.svg"
-                alt="Weather Wear"
-                priority={true}
-                width={320}
-                height={325}
-              />
-            </div>
+            {/* <Image
+              src="/result_1.png"
+              alt="Weather Wear"
+              priority={true}
+              width={322}
+              height={322}
+              css={WearImg}
+            /> */}
+
+            <img
+              src={wearJudgeImg}
+              alt="Weather Wear"
+              width={322}
+              height={322}
+              css={WearImg}
+            />
             <p css={WearComment}>
-              朝・夜は　ジャケットなど羽織るものが必要で昼は薄手の長袖シャツなどで十分でしょう。
+              {wearJudgeTxt}
               <br />
               今日も一日がんばりましょう！
             </p>
@@ -226,7 +306,7 @@ const result = () => {
               </ul>
             </div>
             <div css={Graph}>
-              <p>気温一覧</p>
+              {/* <p>気温一覧</p>
               <ul>
                 {tempList.map((temp, index) => {
                   return (
@@ -236,8 +316,10 @@ const result = () => {
                   )
                 })}
               </ul>
+              <canvas id="myChart" width="400" height="400"></canvas> */}
             </div>
           </div>
+          <div className="graph-container"></div>
           <div css={BtnWrap}>
             <button onClick={() => router.push("/")}>TOP</button>
           </div>
