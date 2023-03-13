@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 import Head from "next/head"
 import Image from "next/image"
 import { css } from "@emotion/react"
@@ -29,7 +29,6 @@ ChartJS.register(
 const result = () => {
   const [posts, setPosts] = useState(null)
   const [area, setArea] = useState(null)
-  // const [tempList, setTempList] = useState([])
   const [tempList3h, setTempList3h] = useState([])
   const [maxVal, setMaxVal] = useState(null)
   const [minVal, setMinVal] = useState(null)
@@ -43,16 +42,22 @@ const result = () => {
   const { pref, lat, lng } = router.query
 
   useEffect(() => {
-    axios
-      .get(
-        `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&hourly=temperature_2m,weathercode`
-      )
-      .then((res) => {
-        setPosts(res.data)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+    const cachedData = localStorage.getItem("cachedData")
+    if (cachedData) {
+      setPosts(JSON.parse(cachedData))
+    } else {
+      axios
+        .get(
+          `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&hourly=temperature_2m,weathercode`
+        )
+        .then((res) => {
+          setPosts(res.data)
+          localStorage.setItem("cachedData", JSON.stringify(res.data))
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
   }, [])
 
   const mostValue = (arr) => {
@@ -135,7 +140,6 @@ const result = () => {
     if (posts) {
       setArea(pref)
       const temp_arr = [...posts.hourly.temperature_2m.slice(0, 24)]
-      // setTempList(temp_arr)
       tempListFilter(temp_arr)
       const max_val = Math.max(...tempList3h)
       setMaxVal(max_val)
@@ -149,6 +153,48 @@ const result = () => {
       wearTxtJudge(max_val)
     }
   }, [posts])
+
+  // 折れ線グラフのロジック（react-chartjs-2ライブラリ使用）
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      x: {
+        grid: {
+          display: false,
+        },
+      },
+      y: {
+        display: false,
+        grid: {
+          display: false,
+        },
+      },
+    },
+    plugins: {
+      title: {
+        display: false,
+        text: false,
+      },
+      legend: {
+        display: false,
+      },
+      scales: {
+        display: false,
+      },
+    },
+  }
+  const chartData = {
+    labels: ["0h", "3h", "6h", "9h", "12h", "15h", "18h", "21h"],
+    datasets: [
+      {
+        label: "",
+        data: tempList3h,
+        borderColor: "rgb(40, 124, 205)",
+        backgroundColor: "rgb(255, 255, 255)",
+      },
+    ],
+  }
 
   const Main = css`
     background-color: #a1c6ea;
@@ -282,48 +328,6 @@ const result = () => {
     border-radius: 0.8rem;
   `
 
-  // 折れ線グラフのロジック（react-chartjs-2ライブラリ使用）
-  const options = {
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-      x: {
-        grid: {
-          display: false,
-        },
-      },
-      y: {
-        display: false,
-        grid: {
-          display: false,
-        },
-      },
-    },
-    plugins: {
-      title: {
-        display: false,
-        text: false,
-      },
-      legend: {
-        display: false,
-      },
-      scales: {
-        display: false,
-      },
-    },
-  }
-  const data = {
-    labels: ["0h", "3h", "6h", "9h", "12h", "15h", "18h", "21h"],
-    datasets: [
-      {
-        label: "",
-        data: tempList3h,
-        borderColor: "rgb(40, 124, 205)",
-        backgroundColor: "rgb(255, 255, 255)",
-      },
-    ],
-  }
-
   return (
     <>
       <Head>
@@ -377,28 +381,13 @@ const result = () => {
                 </li>
               </ul>
             </div>
-            {/* <div css={Graph}>
-              <ul>
-                {tempList3h.map((temp, index) => {
-                  return (
-                    <>
-                      <li key={`temp-${index}`}>{temp}</li>
-                    </>
-                  )
-                })}
-                <li>7.8</li>
-                <li>8.4</li>
-                <li>7.8</li>
-                <li>4.9</li>
-                <li>2</li>
-                <li>-1.1</li>
-                <li>-2.9</li>
-                <li>-4.5</li>
-              </ul>
-              <canvas id="myChart" width="400" height="400"></canvas>
-            </div> */}
             <div css={Graph}>
-              <Line options={options} data={data} width={500} height={400} />
+              <Line
+                options={chartOptions}
+                data={chartData}
+                width={500}
+                height={400}
+              />
             </div>
           </div>
           <div css={BtnWrap}>
