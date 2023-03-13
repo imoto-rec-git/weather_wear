@@ -1,14 +1,36 @@
-import { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import Head from "next/head"
 import Image from "next/image"
 import { css } from "@emotion/react"
 import { useRouter } from "next/router"
 import axios from "axios"
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js"
+import { Line } from "react-chartjs-2"
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+)
 
 const result = () => {
   const [posts, setPosts] = useState(null)
   const [area, setArea] = useState(null)
-  const [tempList, setTempList] = useState([])
+  // const [tempList, setTempList] = useState([])
+  const [tempList3h, setTempList3h] = useState([])
   const [maxVal, setMaxVal] = useState(null)
   const [minVal, setMinVal] = useState(null)
   const [wcArr, setWcArr] = useState([])
@@ -104,15 +126,20 @@ const result = () => {
       )
     }
   }
+  const tempListFilter = (arr) => {
+    const every3hours_arr = arr.filter((_, i) => i % 3 === 0)
+    setTempList3h(every3hours_arr)
+  }
 
   useEffect(() => {
     if (posts) {
       setArea(pref)
       const temp_arr = [...posts.hourly.temperature_2m.slice(0, 24)]
-      setTempList(temp_arr)
-      const max_val = Math.max(...temp_arr)
+      // setTempList(temp_arr)
+      tempListFilter(temp_arr)
+      const max_val = Math.max(...tempList3h)
       setMaxVal(max_val)
-      const min_val = Math.min(...temp_arr)
+      const min_val = Math.min(...tempList3h)
       setMinVal(min_val)
       const wc_arr = [...posts.hourly.weathercode.slice(0, 24)]
       setWcArr(wc_arr)
@@ -246,12 +273,57 @@ const result = () => {
     }
   `
   const Graph = css`
+    max-width: min-content;
     width: 100%;
     height: 132px;
     background: rgba(245, 245, 245, 0.2);
-    margin: 0 0 2.6rem;
+    margin: 0 auto 2.6rem;
+    padding: 1.2rem;
     border-radius: 0.8rem;
   `
+
+  // 折れ線グラフのロジック（react-chartjs-2ライブラリ使用）
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      x: {
+        grid: {
+          display: false,
+        },
+      },
+      y: {
+        display: false,
+        grid: {
+          display: false,
+        },
+      },
+    },
+    plugins: {
+      title: {
+        display: false,
+        text: false,
+      },
+      legend: {
+        display: false,
+      },
+      scales: {
+        display: false,
+      },
+    },
+  }
+  const data = {
+    labels: ["0h", "3h", "6h", "9h", "12h", "15h", "18h", "21h"],
+    datasets: [
+      {
+        label: "",
+        data: tempList3h,
+        borderColor: "rgb(40, 124, 205)",
+        backgroundColor: "rgb(255, 255, 255)",
+      },
+    ],
+  }
+
   return (
     <>
       <Head>
@@ -305,21 +377,30 @@ const result = () => {
                 </li>
               </ul>
             </div>
-            <div css={Graph}>
-              {/* <p>気温一覧</p>
+            {/* <div css={Graph}>
               <ul>
-                {tempList.map((temp, index) => {
+                {tempList3h.map((temp, index) => {
                   return (
                     <>
                       <li key={`temp-${index}`}>{temp}</li>
                     </>
                   )
                 })}
+                <li>7.8</li>
+                <li>8.4</li>
+                <li>7.8</li>
+                <li>4.9</li>
+                <li>2</li>
+                <li>-1.1</li>
+                <li>-2.9</li>
+                <li>-4.5</li>
               </ul>
-              <canvas id="myChart" width="400" height="400"></canvas> */}
+              <canvas id="myChart" width="400" height="400"></canvas>
+            </div> */}
+            <div css={Graph}>
+              <Line options={options} data={data} width={500} height={400} />
             </div>
           </div>
-          <div className="graph-container"></div>
           <div css={BtnWrap}>
             <button onClick={() => router.push("/")}>TOP</button>
           </div>
