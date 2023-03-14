@@ -42,23 +42,17 @@ const result = () => {
   const { pref, lat, lng } = router.query
 
   useEffect(() => {
-    const cachedData = localStorage.getItem("cachedData")
-    if (cachedData) {
-      setPosts(JSON.parse(cachedData))
-    } else {
-      axios
-        .get(
-          `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&hourly=temperature_2m,weathercode`
-        )
-        .then((res) => {
-          setPosts(res.data)
-          localStorage.setItem("cachedData", JSON.stringify(res.data))
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    }
-  }, [])
+    axios
+      .get(
+        `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&hourly=temperature_2m,weathercode`
+      )
+      .then((res) => {
+        setPosts(res.data)
+      })
+      .catch((err) => {
+        console.log("Error occurred while fetching data: ", err)
+      })
+  }, [lat, lng])
 
   const mostValue = (arr) => {
     let freq = {}
@@ -152,7 +146,7 @@ const result = () => {
       wearImgJudge(max_val)
       wearTxtJudge(max_val)
     }
-  }, [posts])
+  }, [posts, maxVal, minVal])
 
   // 折れ線グラフのロジック（react-chartjs-2ライブラリ使用）
   const chartOptions = {
