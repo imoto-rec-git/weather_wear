@@ -2,14 +2,29 @@ import Head from "next/head"
 import Image from "next/image"
 import { css } from "@emotion/react"
 import { useRouter } from "next/router"
+import axios from "axios"
+import { useEffect, useState } from "react"
 
 export default function Home() {
+  const [reverseGeo, setReverseGeo] = useState(null)
   const router = useRouter()
   const handleGetLocation = () => {
     if (typeof navigator !== "undefined" && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         const latVal = position.coords.latitude
         const lngVal = position.coords.longitude
+        // axios
+        //   .get(
+        //     `https://map.yahooapis.jp/geoapi/V1/reverseGeoCoder?lat=${latVal}&lon=${lngVal}&output=json&appid=dj00aiZpPVJBemJFRWwzMjZrbCZzPWNvbnN1bWVyc2VjcmV0Jng9ZTA-`
+        //   )
+        //   .then((res) => {
+        //     setReverseGeo(res.data)
+        //   })
+        //   .catch((err) => {
+        //     console.log("Error occurred while fetching data: ", err)
+        //   })
+        // console.log(reverseGeo)
+
         router.push(`/result?pref=○○県&lat=${latVal}&lng=${lngVal}`)
       })
     } else {
@@ -18,7 +33,7 @@ export default function Home() {
       )
     }
   }
-
+  // https://map.yahooapis.jp/geoapi/V1/reverseGeoCoder?lat=43.063&lon=141.347&output=json&appid=dj00aiZpPVJBemJFRWwzMjZrbCZzPWNvbnN1bWVyc2VjcmV0Jng9ZTA-
   const Main = css`
     background-color: #a1c6ea;
   `
