@@ -2,9 +2,27 @@ import Head from "next/head"
 import Image from "next/image"
 import { css } from "@emotion/react"
 import { useRouter } from "next/router"
+import { useState } from "react"
 
 export default function Home() {
   const router = useRouter()
+  const [lat, setLat] = useState(null)
+  const [lng, setLng] = useState(null)
+  const handleGetLocation = () => {
+    if (typeof navigator !== "undefined" && navigator.geolocation) {
+      console.log("位置情報機能が利用可能")
+      navigator.geolocation.getCurrentPosition((position) => {
+        const latVal = position.coords.latitude
+        setLat(latVal)
+        const lngVal = position.coords.longitude
+        setLng(lngVal)
+        router.push(`/result?pref=○○県&lat=${lat}&lng=${lng}`)
+      })
+    } else {
+      console.log("位置情報機能が利用不可")
+    }
+  }
+
   const Main = css`
     background-color: #a1c6ea;
   `
@@ -80,9 +98,7 @@ export default function Home() {
             <p css={Paragraph}>今日のファッションは天気次第</p>
           </div>
           <div css={BtnWrap}>
-            <button onClick={() => router.push("/result")}>
-              位置情報を取得
-            </button>
+            <button onClick={handleGetLocation}>位置情報を取得</button>
             <button onClick={() => router.push("/pref")}>都道府県を選択</button>
           </div>
         </section>
