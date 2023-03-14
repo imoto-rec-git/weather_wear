@@ -2,24 +2,20 @@ import Head from "next/head"
 import Image from "next/image"
 import { css } from "@emotion/react"
 import { useRouter } from "next/router"
-import { useState } from "react"
 
 export default function Home() {
   const router = useRouter()
-  const [lat, setLat] = useState(null)
-  const [lng, setLng] = useState(null)
   const handleGetLocation = () => {
     if (typeof navigator !== "undefined" && navigator.geolocation) {
-      console.log("位置情報機能が利用可能")
       navigator.geolocation.getCurrentPosition((position) => {
         const latVal = position.coords.latitude
-        setLat(latVal)
         const lngVal = position.coords.longitude
-        setLng(lngVal)
-        router.push(`/result?pref=○○県&lat=${lat}&lng=${lng}`)
+        router.push(`/result?pref=○○県&lat=${latVal}&lng=${lngVal}`)
       })
     } else {
-      console.log("位置情報機能が利用不可")
+      alert(
+        "この端末では位置情報機能が利用できません。「都道府県を選択」から遷移いただくか、位置情報機能をオンにしてください。"
+      )
     }
   }
 
