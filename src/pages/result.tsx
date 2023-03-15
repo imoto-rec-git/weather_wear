@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react"
-import Head from "next/head"
-import Image from "next/image"
-import { css } from "@emotion/react"
-import { useRouter } from "next/router"
-import axios from "axios"
+import { useState, useEffect } from 'react';
+import Head from 'next/head';
+import Image from 'next/image';
+import { css } from '@emotion/react';
+import { useRouter } from 'next/router';
+import axios from 'axios';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -13,8 +13,8 @@ import {
   Title,
   Tooltip,
   Legend,
-} from "chart.js"
-import { Line } from "react-chartjs-2"
+} from 'chart.js';
+import { Line } from 'react-chartjs-2';
 
 ChartJS.register(
   CategoryScale,
@@ -24,22 +24,22 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend
-)
+);
 
 const result = () => {
-  const [posts, setPosts] = useState(null)
-  const [area, setArea] = useState(null)
-  const [tempList3h, setTempList3h] = useState([])
-  const [maxVal, setMaxVal] = useState(null)
-  const [minVal, setMinVal] = useState(null)
-  const [wcArr, setWcArr] = useState([])
-  const [wc, setWc] = useState(null)
-  const [wt, setWt] = useState(null)
-  const [wearJudgeImg, setWearJudgeImg] = useState(null)
-  const [wearJudgeTxt, setWearJudgeTxt] = useState(null)
+  const [posts, setPosts] = useState(null);
+  const [area, setArea] = useState(null);
+  const [tempList3h, setTempList3h] = useState([]);
+  const [maxVal, setMaxVal] = useState(null);
+  const [minVal, setMinVal] = useState(null);
+  const [wcArr, setWcArr] = useState([]);
+  const [wc, setWc] = useState(null);
+  const [wt, setWt] = useState(null);
+  const [wearJudgeImg, setWearJudgeImg] = useState(null);
+  const [wearJudgeTxt, setWearJudgeTxt] = useState(null);
 
-  const router = useRouter()
-  const { pref, lat, lng } = router.query
+  const router = useRouter();
+  const { pref, lat, lng } = router.query;
 
   useEffect(() => {
     axios
@@ -47,40 +47,40 @@ const result = () => {
         `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&hourly=temperature_2m,weathercode`
       )
       .then((res) => {
-        setPosts(res.data)
+        setPosts(res.data);
       })
       .catch((err) => {
-        console.log("Error occurred while fetching data: ", err)
-      })
-  }, [lat, lng])
+        console.log('Error occurred while fetching data: ', err);
+      });
+  }, [pref, lat, lng]);
 
   const mostValue = (arr) => {
-    let freq = {}
+    let freq = {};
     for (let i = 0; i < arr.length; i++) {
-      let el = arr[i]
+      let el = arr[i];
       if (freq[el]) {
-        freq[el]++
+        freq[el]++;
       } else {
-        freq[el] = 1
+        freq[el] = 1;
       }
     }
 
-    let maxFreq = 0
-    let mode = null
+    let maxFreq = 0;
+    let mode = null;
     for (let el in freq) {
       if (freq[el] > maxFreq) {
-        maxFreq = freq[el]
-        mode = el
+        maxFreq = freq[el];
+        mode = el;
       }
     }
-    return mode
-  }
+    return mode;
+  };
 
   const weatherText = (code) => {
     if (code == 0 || code == 1) {
-      setWt("晴れ")
+      setWt('晴れ');
     } else if (code == 2 || code == 3) {
-      setWt("晴れのち曇り")
+      setWt('晴れのち曇り');
     } else if (
       code == 61 ||
       code == 63 ||
@@ -88,65 +88,65 @@ const result = () => {
       code == 66 ||
       code == 67
     ) {
-      setWt("雨")
+      setWt('雨');
     } else {
-      setWt("-")
+      setWt('-');
     }
-  }
+  };
 
   const wearImgJudge = (maxTemp) => {
     if (maxTemp >= 25) {
-      setWearJudgeImg("/images/result_1.png")
+      setWearJudgeImg('/images/result_1.png');
     } else if (maxTemp >= 16) {
-      setWearJudgeImg("/images/result_2.png")
+      setWearJudgeImg('/images/result_2.png');
     } else if (maxTemp >= 8) {
-      setWearJudgeImg("/images/result_3.png")
+      setWearJudgeImg('/images/result_3.png');
     } else {
-      setWearJudgeImg("/images/result_4.png")
+      setWearJudgeImg('/images/result_4.png');
     }
-  }
+  };
 
   const wearTxtJudge = (maxTemp) => {
     if (maxTemp >= 25) {
       setWearJudgeTxt(
-        "日差しが暑く、歩くだけで汗ばみがちです。半袖など快適な服装がおすすめです。"
-      )
+        '日差しが暑く、歩くだけで汗ばみがちです。半袖など快適な服装がおすすめです。'
+      );
     } else if (maxTemp >= 16) {
       setWearJudgeTxt(
-        "風が吹くと少し涼しく感じるかもしれません。上着は要らず長袖シャツなどで十分です。"
-      )
+        '風が吹くと少し涼しく感じるかもしれません。上着は要らず長袖シャツなどで十分です。'
+      );
     } else if (maxTemp >= 8) {
       setWearJudgeTxt(
-        "風が吹くと寒く感じます。トレンチコートや厚手のニットなどおすすめです。"
-      )
+        '風が吹くと寒く感じます。トレンチコートや厚手のニットなどおすすめです。'
+      );
     } else {
       setWearJudgeTxt(
-        "冬を感じる冷たい空気です。場合によって肌が痛くなる寒さなので、冬物コートや厚手のダウンがおすすめです。"
-      )
+        '冬を感じる冷たい空気です。場合によって肌が痛くなる寒さなので、冬物コートや厚手のダウンがおすすめです。'
+      );
     }
-  }
+  };
   const tempListFilter = (arr) => {
-    const every3hours_arr = arr.filter((_, i) => i % 3 === 0)
-    setTempList3h(every3hours_arr)
-  }
+    const every3hours_arr = arr.filter((_, i) => i % 3 === 0);
+    setTempList3h(every3hours_arr);
+  };
 
   useEffect(() => {
     if (posts) {
-      setArea(pref)
-      const temp_arr = [...posts.hourly.temperature_2m.slice(0, 24)]
-      tempListFilter(temp_arr)
-      const max_val = Math.max(...tempList3h)
-      setMaxVal(max_val)
-      const min_val = Math.min(...tempList3h)
-      setMinVal(min_val)
-      const wc_arr = [...posts.hourly.weathercode.slice(0, 24)]
-      setWcArr(wc_arr)
-      setWc(mostValue(wc_arr))
-      weatherText(mostValue(wc_arr))
-      wearImgJudge(max_val)
-      wearTxtJudge(max_val)
+      setArea(pref);
+      const temp_arr = [...posts.hourly.temperature_2m.slice(0, 24)];
+      tempListFilter(temp_arr);
+      const max_val = Math.max(...tempList3h);
+      setMaxVal(max_val);
+      const min_val = Math.min(...tempList3h);
+      setMinVal(min_val);
+      const wc_arr = [...posts.hourly.weathercode.slice(0, 24)];
+      setWcArr(wc_arr);
+      setWc(mostValue(wc_arr));
+      weatherText(mostValue(wc_arr));
+      wearImgJudge(max_val);
+      wearTxtJudge(max_val);
     }
-  }, [posts, maxVal, minVal])
+  }, [posts, maxVal, minVal]);
 
   // 折れ線グラフのロジック（react-chartjs-2ライブラリ使用）
   const chartOptions = {
@@ -177,22 +177,22 @@ const result = () => {
         display: false,
       },
     },
-  }
+  };
   const chartData = {
-    labels: ["0h", "3h", "6h", "9h", "12h", "15h", "18h", "21h"],
+    labels: ['0h', '3h', '6h', '9h', '12h', '15h', '18h', '21h'],
     datasets: [
       {
-        label: "",
+        label: '',
         data: tempList3h,
-        borderColor: "rgb(40, 124, 205)",
-        backgroundColor: "rgb(255, 255, 255)",
+        borderColor: 'rgb(40, 124, 205)',
+        backgroundColor: 'rgb(255, 255, 255)',
       },
     ],
-  }
+  };
 
   const Main = css`
     background-color: #a1c6ea;
-  `
+  `;
   const Section = css`
     background-color: rgba(245, 245, 245, 0.4);
     width: 96%;
@@ -205,24 +205,24 @@ const result = () => {
     border-radius: 10px;
     box-shadow: 10px 5px 60px rgba(0, 0, 0, 0.25);
     padding: 20px;
-  `
+  `;
   const WearImg = css`
     width: 100%;
     height: auto;
     margin: 0 0 12px;
-  `
+  `;
   const WearComment = css`
     font-size: var(--font-size-medium);
     margin: 0 0 20px;
-  `
+  `;
   const WeatherDetail = css`
     margin: 0 0 20px;
-  `
+  `;
   const Area = css`
     text-align: center;
     font-size: var(--font-size-small);
     margin: 0 0 4px;
-  `
+  `;
   const Climate = css`
     font-size: var(--font-size-small);
     text-align: center;
@@ -232,7 +232,7 @@ const result = () => {
       font-size: 2.4rem;
       margin: 0 0 0 8px;
     }
-  `
+  `;
   const Temp = css`
     font-size: var(--font-size-medium);
     list-style: none;
@@ -253,7 +253,7 @@ const result = () => {
         margin: 0 0 0 0.8rem;
       }
     }
-  `
+  `;
   const BtnWrap = css`
     min-width: 320px;
     margin: 0 auto;
@@ -274,7 +274,7 @@ const result = () => {
       position: relative;
       z-index: 1;
       &::before {
-        content: "";
+        content: '';
         z-index: -1;
         position: absolute;
         top: -1px;
@@ -300,7 +300,7 @@ const result = () => {
         height: 55px;
       }
       &::after {
-        content: "";
+        content: '';
         z-index: -1;
         position: absolute;
         top: 0;
@@ -311,7 +311,7 @@ const result = () => {
         border-radius: inherit;
       }
     }
-  `
+  `;
   const Graph = css`
     max-width: min-content;
     width: 100%;
@@ -320,7 +320,7 @@ const result = () => {
     margin: 0 auto 2.6rem;
     padding: 1.2rem;
     border-radius: 0.8rem;
-  `
+  `;
 
   return (
     <>
@@ -385,12 +385,12 @@ const result = () => {
             </div>
           </div>
           <div css={BtnWrap}>
-            <button onClick={() => router.push("/")}>TOP</button>
+            <button onClick={() => router.push('/')}>TOP</button>
           </div>
         </section>
       </main>
     </>
-  )
-}
+  );
+};
 
-export default result
+export default result;

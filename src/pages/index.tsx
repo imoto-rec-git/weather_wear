@@ -1,42 +1,40 @@
-import Head from "next/head"
-import Image from "next/image"
-import { css } from "@emotion/react"
-import { useRouter } from "next/router"
-import axios from "axios"
-import { useEffect, useState } from "react"
+import Head from 'next/head';
+import Image from 'next/image';
+import { css } from '@emotion/react';
+import { useRouter } from 'next/router';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 export default function Home() {
-  const [reverseGeo, setReverseGeo] = useState(null)
-  const router = useRouter()
+  const [reverseGeo, setReverseGeo] = useState(null);
+  const router = useRouter();
   const handleGetLocation = () => {
-    if (typeof navigator !== "undefined" && navigator.geolocation) {
+    if (typeof navigator !== 'undefined' && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
-        const latVal = position.coords.latitude
-        const lngVal = position.coords.longitude
-        // axios
-        //   .get(
-        //     `https://map.yahooapis.jp/geoapi/V1/reverseGeoCoder?lat=${latVal}&lon=${lngVal}&output=json&appid=dj00aiZpPVJBemJFRWwzMjZrbCZzPWNvbnN1bWVyc2VjcmV0Jng9ZTA-`
-        //   )
-        //   .then((res) => {
-        //     setReverseGeo(res.data)
-        //   })
-        //   .catch((err) => {
-        //     console.log("Error occurred while fetching data: ", err)
-        //   })
-        // console.log(reverseGeo)
-
-        router.push(`/result?pref=○○県&lat=${latVal}&lng=${lngVal}`)
-      })
+        const latVal = position.coords.latitude;
+        const lngVal = position.coords.longitude;
+        axios
+          .get(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latVal}&lon=${lngVal}&zoom=18&addressdetails=1`
+          )
+          .then((res) => {
+            setReverseGeo(res.data.address.state);
+          })
+          .catch((err) => {
+            console.log('Error occurred while fetching data: ', err);
+          });
+        router.push(`/result?pref=${reverseGeo}&lat=${latVal}&lng=${lngVal}`);
+      });
     } else {
       alert(
-        "この端末では位置情報機能が利用できません。「都道府県を選択」から遷移いただくか、位置情報機能をオンにしてください。"
-      )
+        'この端末では位置情報機能が利用できません。「都道府県を選択」から遷移いただくか、位置情報機能をオンにしてください。'
+      );
     }
-  }
+  };
   // https://map.yahooapis.jp/geoapi/V1/reverseGeoCoder?lat=43.063&lon=141.347&output=json&appid=dj00aiZpPVJBemJFRWwzMjZrbCZzPWNvbnN1bWVyc2VjcmV0Jng9ZTA-
   const Main = css`
     background-color: #a1c6ea;
-  `
+  `;
   const Section = css`
     background-color: rgba(245, 245, 245, 0.4);
     width: calc(100% - 20px);
@@ -51,7 +49,7 @@ export default function Home() {
     align-items: center;
     border-radius: 12px;
     box-shadow: 10px 5px 60px rgba(0, 0, 0, 0.25);
-  `
+  `;
   const logoWrap = css`
     position: absolute;
     top: -120px;
@@ -60,11 +58,11 @@ export default function Home() {
     text-align: center;
     width: 197px;
     height: 87px;
-  `
+  `;
   const Paragraph = css`
     font-size: 12px;
     color: #287ccd;
-  `
+  `;
   const BtnWrap = css`
     margin: 0 auto;
     bottom: 20px;
@@ -84,7 +82,7 @@ export default function Home() {
       border-radius: 24px;
       cursor: pointer;
     }
-  `
+  `;
 
   return (
     <>
@@ -110,10 +108,10 @@ export default function Home() {
           </div>
           <div css={BtnWrap}>
             <button onClick={handleGetLocation}>位置情報を取得</button>
-            <button onClick={() => router.push("/pref")}>都道府県を選択</button>
+            <button onClick={() => router.push('/pref')}>都道府県を選択</button>
           </div>
         </section>
       </main>
     </>
-  )
+  );
 }
