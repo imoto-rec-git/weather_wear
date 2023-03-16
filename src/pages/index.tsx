@@ -1,34 +1,34 @@
-import Head from "next/head"
-import Image from "next/image"
-import { css } from "@emotion/react"
-import { useRouter } from "next/router"
-import axios from "axios"
+import Head from 'next/head';
+import Image from 'next/image';
+import { css } from '@emotion/react';
+import { useRouter } from 'next/router';
+import axios from 'axios';
 
 export default function Home() {
-  const router = useRouter()
+  const router = useRouter();
   const handleGetLocation = () => {
-    if (typeof navigator !== "undefined" && navigator.geolocation) {
+    if (typeof navigator !== 'undefined' && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
-        const latVal = position.coords.latitude
-        const lngVal = position.coords.longitude
+        const latVal = position.coords.latitude;
+        const lngVal = position.coords.longitude;
         axios
           .get(
             `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latVal}&lon=${lngVal}&zoom=18&addressdetails=1`
           )
           .then((res) => {
-            const pref = `${res.data.address.state}${res.data.address.city}`
-            router.push(`/result?pref=${pref}&lat=${latVal}&lng=${lngVal}`)
+            const pref = `${res.data.address.state}${res.data.address.city}`;
+            router.push(`/result?pref=${pref}&lat=${latVal}&lng=${lngVal}`);
           })
           .catch((err) => {
-            console.log("Error occurred while fetching data: ", err)
-          })
-      })
+            console.log('Error occurred while fetching data: ', err);
+          });
+      });
     } else {
       alert(
-        "この端末では位置情報機能が利用できません。「都道府県を選択」から遷移いただくか、位置情報機能をオンにしてください。"
-      )
+        'この端末では位置情報機能が利用できません。「都道府県を選択」から遷移いただくか、位置情報機能をオンにしてください。'
+      );
     }
-  }
+  };
   const Main = css`
     background-color: #a1c6ea;
     position: relative;
@@ -36,7 +36,7 @@ export default function Home() {
     overflow: hidden;
     &::before,
     &::after {
-      content: "";
+      content: '';
       z-index: 1;
       filter: blur(100px);
       position: absolute;
@@ -51,14 +51,14 @@ export default function Home() {
       box-shadow: -153px 690px 0 #507dbc;
     }
     &::after {
-      content: "";
+      content: '';
       width: 517px;
       height: 311px;
       left: -378px;
       top: 139px;
       background: #e7f1fb;
     }
-  `
+  `;
   const Section = css`
     width: calc(100% - 20px);
     position: absolute;
@@ -73,7 +73,7 @@ export default function Home() {
     align-items: center;
     border-radius: 12px;
     &::before {
-      content: "";
+      content: '';
       box-sizing: border-box;
       position: absolute;
       width: 903px;
@@ -85,7 +85,7 @@ export default function Home() {
       backdrop-filter: blur(15px);
       border-radius: 50%;
     }
-  `
+  `;
   const logoWrap = css`
     position: absolute;
     top: -120px;
@@ -94,11 +94,11 @@ export default function Home() {
     text-align: center;
     width: 197px;
     height: 87px;
-  `
+  `;
   const Paragraph = css`
     font-size: 12px;
     color: #287ccd;
-  `
+  `;
   const BtnWrap = css`
     margin: 0 auto;
     bottom: 20px;
@@ -120,8 +120,12 @@ export default function Home() {
       cursor: pointer;
       line-height: 1;
       border: 1px solid #fff;
+      &::before {
+        content: '';
+        box-shadow: 0 0 10px #000;
+      }
     }
-  `
+  `;
 
   return (
     <>
@@ -147,10 +151,10 @@ export default function Home() {
           </div>
           <div css={BtnWrap}>
             <button onClick={handleGetLocation}>位置情報を取得</button>
-            <button onClick={() => router.push("/pref")}>都道府県を選択</button>
+            <button onClick={() => router.push('/pref')}>都道府県を選択</button>
           </div>
         </section>
       </main>
     </>
-  )
+  );
 }
