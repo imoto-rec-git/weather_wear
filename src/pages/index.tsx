@@ -77,15 +77,18 @@ export default function Home() {
       content: "";
       box-sizing: border-box;
       position: absolute;
-      width: calc(903 / 375 * 100vw);
-      height: calc(903 / 375 * 100vw);
+      width: 903px;
+      height: 903px;
       margin: auto;
       top: 24px;
       background: rgba(245, 245, 245, 0.2);
       box-shadow: 10px 5px 60px rgba(0, 0, 0, 0.25);
-      backdrop-filter: blur(30px);
       border-radius: 50%;
       border: 1px solid rgba(255, 255, 255, 0.5);
+      @media (min-width: 418px) {
+        width: calc(903 / 375 * 100vw);
+        height: calc(903 / 375 * 100vw);
+      }
     }
   `
   const logoWrap = css`
@@ -105,9 +108,12 @@ export default function Home() {
     margin: 0 auto;
     bottom: 20px;
     position: absolute;
-    max-width: 360px;
-    width: 100%;
+    width: calc(100% - 30px);
     backdrop-filter: unset;
+    @media (min-width: 418px) {
+      max-width: 360px;
+      width: 100%;
+    }
     button {
       position: relative;
       color: #fff;
