@@ -201,7 +201,7 @@ const Pref = ({ router }) => {
     }
     button {
       position: relative;
-      color: #fff;
+      color: #e7f1fb;
       display: block;
       margin: 0 0 18px;
       width: 100%;

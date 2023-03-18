@@ -12,6 +12,7 @@ import {
   Title,
   Tooltip,
   Legend,
+  ChartOptions,
 } from "chart.js"
 import { Line } from "react-chartjs-2"
 
@@ -152,7 +153,7 @@ const result = () => {
   }, [posts, maxVal, minVal])
 
   // 折れ線グラフのロジック（react-chartjs-2ライブラリ使用）
-  const chartOptions = {
+  const chartOptions: ChartOptions = {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
@@ -304,7 +305,7 @@ const result = () => {
     }
     button {
       position: relative;
-      color: #fff;
+      color: #e7f1fb;
       display: block;
       margin: 0 0 18px;
       width: 100%;
