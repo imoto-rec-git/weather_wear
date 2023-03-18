@@ -222,34 +222,32 @@ const result = () => {
   const Section = css`
     position: relative;
     z-index: 2;
-    background-color: rgba(245, 245, 245, 0.4);
-    width: 96%;
-    min-height: 100vh;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin: 12px auto;
-    border-radius: 10px;
+    background-color: rgba(245, 245, 245, 0.2);
+    width: calc(100% - 20px);
+    height: auto;
+    margin: 10px auto;
+    border-radius: 12px;
     box-shadow: 10px 5px 60px rgba(0, 0, 0, 0.25);
-    padding: 20px;
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
   `
   const WearImg = css`
     width: 100%;
     height: auto;
-    margin: 0 0 12px;
+    margin: 0 0 1.2rem;
   `
   const WearComment = css`
     font-size: var(--font-size-medium);
-    margin: 0 0 20px;
+    margin: 0 0.8rem 1.2rem;
+    line-height: 1.6;
   `
   const WeatherDetail = css`
-    margin: 0 0 20px;
+    margin: 0 0 2rem;
   `
   const Area = css`
     text-align: center;
     font-size: var(--font-size-small);
-    margin: 0 0 4px;
+    margin: 0 0 0.4rem;
   `
   const Climate = css`
     font-size: var(--font-size-small);
@@ -283,54 +281,47 @@ const result = () => {
     }
   `
   const BtnWrap = css`
-    min-width: 320px;
     margin: 0 auto;
     bottom: 20px;
+    width: 100%;
+    backdrop-filter: unset;
+    @media (min-width: 418px) {
+      max-width: 360px;
+      width: 100%;
+    }
     button {
-      width: calc(100% - 2px);
-      color: var(--color-white);
+      position: relative;
+      color: #fff;
       display: block;
-      padding: 19px 0;
+      margin: 0 0 18px;
+      width: 100%;
+      padding: 20px 0;
       background: linear-gradient(
-        45deg,
-        rgba(42, 130, 215, 1) 0%,
-        rgba(38, 118, 195, 1) 100%
+        135deg,
+        rgba(231, 241, 251, 0.6),
+        rgba(194, 204, 215, 0.6)
       );
       border: none;
       border-radius: 24px;
       cursor: pointer;
-      position: relative;
+      line-height: 1;
       z-index: 1;
       &::before {
         content: "";
-        z-index: -1;
-        position: absolute;
-        top: -1px;
-        right: 0px;
-        bottom: 0px;
-        left: -1px;
-        background: linear-gradient(
-          135deg,
-          rgba(231, 241, 251, 1) 0%,
-          rgba(194, 204, 215, 1) 100%
-        );
-        transform: translate3d(0, 0, 0) scale(1);
-        filter: blur(0px);
-        opacity: var(1);
-        transition: opacity 0.3s;
-        border-radius: inherit;
-        width: 100%;
-        height: 55px;
-      }
-      &::after {
-        content: "";
-        z-index: -1;
         position: absolute;
         top: 0;
-        right: 0;
-        bottom: 0px;
         left: 0;
-        background: inherit;
+        z-index: -1;
+        box-sizing: border-box;
+        padding: 1px;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          45deg,
+          rgba(42, 130, 215, 1) 0%,
+          rgba(38, 118, 195, 1) 100%
+        );
+        background-clip: content-box;
         border-radius: inherit;
       }
     }
@@ -340,9 +331,13 @@ const result = () => {
     width: 100%;
     height: 132px;
     background: rgba(245, 245, 245, 0.2);
-    margin: 0 auto 2.6rem;
+    margin: 0 auto 4.8rem;
     padding: 1.2rem;
     border-radius: 0.8rem;
+    @media (min-width: 418px) {
+      max-width: 360px;
+      width: 100%;
+    }
   `
 
   return (

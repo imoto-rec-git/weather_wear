@@ -134,13 +134,14 @@ const Pref = ({ router }) => {
   const Section = css`
     position: relative;
     z-index: 2;
-    background-color: rgba(245, 245, 245, 0.4);
+    background-color: rgba(245, 245, 245, 0.2);
     width: calc(100% - 20px);
     height: auto;
     margin: 10px auto;
     border-radius: 12px;
     box-shadow: 10px 5px 60px rgba(0, 0, 0, 0.25);
     padding: 26px 10px 24px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
   `
   const Note = css`
     font-size: var(--font-size-medium);
@@ -150,6 +151,9 @@ const Pref = ({ router }) => {
   `
   const PrefWrapper = css`
     margin: 0 0 24px;
+    &:last-child {
+      margin: 0 0 48px;
+    }
     p {
       color: var(--color-blue);
       font-size: var(--font-size-medium);
@@ -188,22 +192,48 @@ const Pref = ({ router }) => {
     }
   `
   const BtnWrap = css`
-    min-width: 320px;
     margin: 0 auto;
-    bottom: 20px;
-    button {
+    width: 100%;
+    backdrop-filter: unset;
+    @media (min-width: 418px) {
+      max-width: 360px;
       width: 100%;
-      color: var(--color-white);
+    }
+    button {
+      position: relative;
+      color: #fff;
       display: block;
-      padding: 19px 0;
+      margin: 0 0 18px;
+      width: 100%;
+      padding: 20px 0;
       background: linear-gradient(
-        45deg,
-        rgba(42, 130, 215, 1) 0%,
-        rgba(38, 118, 195, 1) 100%
+        135deg,
+        rgba(231, 241, 251, 0.6),
+        rgba(194, 204, 215, 0.6)
       );
-      border: 1px solid #fff;
+      border: none;
       border-radius: 24px;
       cursor: pointer;
+      line-height: 1;
+      z-index: 1;
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        box-sizing: border-box;
+        padding: 1px;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          45deg,
+          rgba(42, 130, 215, 1) 0%,
+          rgba(38, 118, 195, 1) 100%
+        );
+        background-clip: content-box;
+        border-radius: inherit;
+      }
     }
   `
 
