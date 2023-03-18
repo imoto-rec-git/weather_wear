@@ -191,8 +191,37 @@ const result = () => {
 
   const Main = css`
     background-color: #a1c6ea;
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+    &::before,
+    &::after {
+      content: "";
+      z-index: 1;
+      filter: blur(100px);
+      position: absolute;
+    }
+    &::before {
+      width: 592px;
+      height: 472px;
+      left: 165px;
+      top: -215px;
+      border-radius: 50%;
+      background: #629cd5;
+      box-shadow: -153px 690px 0 #507dbc;
+    }
+    &::after {
+      content: "";
+      width: 517px;
+      height: 311px;
+      left: -378px;
+      top: 139px;
+      background: #e7f1fb;
+    }
   `
   const Section = css`
+    position: relative;
+    z-index: 2;
     background-color: rgba(245, 245, 245, 0.4);
     width: 96%;
     min-height: 100vh;
@@ -285,14 +314,9 @@ const result = () => {
           rgba(231, 241, 251, 1) 0%,
           rgba(194, 204, 215, 1) 100%
         );
-        -webkit-transform: translate3d(0px, 0px, 0) scale(1.06);
-        -moz-transform: translate3d(0px, 0px, 0) scale(1.06);
-        -ms-transform: translate3d(0px, 0px, 0) scale(1.06);
         transform: translate3d(0, 0, 0) scale(1);
-        -webkit-filter: blur(0px);
         filter: blur(0px);
         opacity: var(1);
-        -webkit-transition: opacity 0.3s;
         transition: opacity 0.3s;
         border-radius: inherit;
         width: 100%;
