@@ -185,6 +185,23 @@ export default function Home() {
               no-repeat;
           }
         }
+        &.loading {
+          &::before {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid rgba(231, 241, 251, 0.3);
+            border-top: 2px solid rgba(231, 241, 251, 1);
+            left: 0;
+            top: -2px;
+            animation: loading__anime 1s infinite linear;
+          }
+          @keyframes loading__anime {
+            100% {
+              transform: rotate(360deg);
+            }
+          }
+        }
       }
     }
   `
@@ -214,7 +231,7 @@ export default function Home() {
           <div css={BtnWrap}>
             <button onClick={handleGetLocation}>
               {locateLoad ? (
-                <span className="locate">位置情報取得中...</span>
+                <span className="loading">位置情報取得中...</span>
               ) : (
                 <span className="locate">位置情報を取得</span>
               )}

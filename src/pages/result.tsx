@@ -228,6 +228,7 @@ const result = () => {
     position: relative;
     z-index: 2;
     background-color: rgba(245, 245, 245, 0.2);
+    max-width: 640px;
     width: calc(100% - 20px);
     height: auto;
     margin: 10px auto;
@@ -236,13 +237,39 @@ const result = () => {
     padding: 10px;
     border: 1px solid rgba(255, 255, 255, 0.5);
   `
+  const ResultWrapper = css`
+    width: 100%;
+    margin: auto;
+  `
   const Loading = css`
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    p {
-      font-size: var(--font-size-small);
+    > p {
+      font-size: var(--font-size-medium);
+      position: relative;
+      padding: 0 0 0 32px;
+      line-height: 1;
+      &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        border: 3px solid rgba(40, 124, 205, 0.3);
+        border-top: 3px solid var(--color-blue);
+        animation: loading__anime 1s infinite linear;
+      }
+      @keyframes loading__anime {
+        100% {
+          transform: rotate(360deg);
+        }
+      }
     }
   `
   const WearImg = css`
@@ -269,8 +296,56 @@ const result = () => {
     margin: 0 0 14px;
     line-height: 1;
     span {
+      position: relative;
       font-size: 2.4rem;
       margin: 0 0 0 8px;
+      &::before {
+        position: absolute;
+        display: inline-block;
+        content: "";
+        margin: auto;
+        z-index: -1;
+      }
+      &.whether__sun {
+        &::before {
+          background: url("/images/icon_sun.svg") no-repeat;
+          width: 50px;
+          height: 50px;
+          right: -23px;
+          top: 0;
+          bottom: 13px;
+        }
+      }
+      &.weather__sunCloud {
+        &::before {
+          background: url("/images/icon_suncloud.svg") no-repeat;
+          width: 50px;
+          height: 40px;
+          right: -25px;
+          top: 0;
+          bottom: 12px;
+        }
+      }
+      &.whether__cloud {
+        &::before {
+          background: url("/images/icon_cloud.svg") no-repeat;
+          width: 51px;
+          height: 34px;
+          right: -20px;
+          top: 0;
+          bottom: 5px;
+        }
+      }
+      &.whether__rain {
+        &::before {
+          background: url("/images/icon_rain.svg") no-repeat;
+          width: 50px;
+          height: 45px;
+          right: -20px;
+          top: 0;
+          bottom: 5px;
+        }
+      }
     }
   `
   const Temp = css`
@@ -341,17 +416,13 @@ const result = () => {
     }
   `
   const Graph = css`
-    max-width: min-content;
+    max-width: 100%;
     width: 100%;
     height: 132px;
     background: rgba(245, 245, 245, 0.2);
     margin: 0 auto 4.8rem;
     padding: 1.2rem;
     border-radius: 0.8rem;
-    @media (min-width: 418px) {
-      max-width: 360px;
-      width: 100%;
-    }
   `
 
   return (
@@ -370,7 +441,7 @@ const result = () => {
             </div>
           ) : (
             <>
-              <div>
+              <div css={ResultWrapper}>
                 <img
                   src={wearJudgeImg}
                   alt="Weather Wear"
@@ -391,7 +462,19 @@ const result = () => {
                   )}
                   <p css={Climate}>
                     今日の天気は
-                    <span>{wt}</span>
+                    <span
+                      className={
+                        wt === "晴れ"
+                          ? "whether__sun"
+                          : wt === "晴れのち曇り"
+                          ? "weather__sunCloud"
+                          : wt === "雨"
+                          ? "whether__rain"
+                          : ""
+                      }
+                    >
+                      {wt}
+                    </span>
                   </p>
                   <ul css={Temp}>
                     <li>

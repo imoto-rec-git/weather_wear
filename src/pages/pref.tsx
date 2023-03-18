@@ -136,6 +136,7 @@ const Pref = ({ router }) => {
     z-index: 2;
     background-color: rgba(245, 245, 245, 0.2);
     width: calc(100% - 20px);
+    max-width: 640px;
     height: auto;
     margin: 10px auto;
     border-radius: 12px;
@@ -147,18 +148,20 @@ const Pref = ({ router }) => {
     font-size: var(--font-size-medium);
     font-weight: bold;
     text-align: center;
-    margin: 0 0 26px;
-  `
-  const PrefWrapper = css`
     margin: 0 0 24px;
-    &:last-child {
-      margin: 0 0 48px;
+  `
+  const PrefListWrapper = css`
+    margin: 0 0 48px;
+  `
+  const PrefListContents = css`
+    &:not(:last-child) {
+      margin: 0 0 24px;
     }
     p {
       color: var(--color-blue);
       font-size: var(--font-size-medium);
       font-weight: var(--font-weight-bold);
-      margin: 0 0 18px;
+      margin: 0 0 10px;
     }
   `
   const PrefDivision = css`
@@ -248,25 +251,27 @@ const Pref = ({ router }) => {
       <main css={Main}>
         <section css={Section}>
           <p css={Note}>都道府県を１つ選択してください</p>
-          {prefList.map((pref, index) => (
-            <div key={`pref-${index}`} css={PrefWrapper}>
-              <p>{pref.area}</p>
-              <div css={PrefDivision}>
-                {pref.list.map((item, index) => (
-                  <label key={`pref-${index}-item`} htmlFor={item.name}>
-                    <input
-                      type="radio"
-                      name="pref"
-                      value={item.name}
-                      id={item.name}
-                      onChange={hendlePrefectureSelect}
-                    />
-                    {item.name}
-                  </label>
-                ))}
+          <div css={PrefListWrapper}>
+            {prefList.map((pref, index) => (
+              <div key={`pref-${index}`} css={PrefListContents}>
+                <p>{pref.area}</p>
+                <div css={PrefDivision}>
+                  {pref.list.map((item, index) => (
+                    <label key={`pref-${index}-item`} htmlFor={item.name}>
+                      <input
+                        type="radio"
+                        name="pref"
+                        value={item.name}
+                        id={item.name}
+                        onChange={hendlePrefectureSelect}
+                      />
+                      {item.name}
+                    </label>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
           <div css={BtnWrap}>
             <button onClick={() => router.push("/")}>TOPへ</button>
           </div>
