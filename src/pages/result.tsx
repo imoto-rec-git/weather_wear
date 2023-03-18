@@ -36,20 +36,24 @@ const result = () => {
   const [wt, setWt] = useState(null)
   const [wearJudgeImg, setWearJudgeImg] = useState(null)
   const [wearJudgeTxt, setWearJudgeTxt] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
 
   const router = useRouter()
   const { pref, lat, lng } = router.query
 
   useEffect(() => {
+    setIsLoading(true)
     axios
       .get(
         `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&hourly=temperature_2m,weathercode`
       )
       .then((res) => {
         setPosts(res.data)
+        setIsLoading(false)
       })
       .catch((err) => {
         console.log("Error occurred while fetching data: ", err)
+        setIsLoading(false)
       })
   }, [pref, lat, lng])
 
@@ -231,6 +235,15 @@ const result = () => {
     padding: 10px;
     border: 1px solid rgba(255, 255, 255, 0.5);
   `
+  const Loading = css`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    p {
+      font-size: var(--font-size-small);
+    }
+  `
   const WearImg = css`
     width: 100%;
     height: auto;
@@ -350,52 +363,63 @@ const result = () => {
       </Head>
       <main css={Main}>
         <section css={Section}>
-          <div>
-            <img
-              src={wearJudgeImg}
-              alt="Weather Wear"
-              width={322}
-              height={322}
-              css={WearImg}
-            />
-            <p css={WearComment}>
-              {wearJudgeTxt}
-              <br />
-              今日も一日がんばりましょう！
-            </p>
-            <div css={WeatherDetail}>
-              {area && (
-                <div css={Area}>
-                  <p>{area}</p>
+          {/* <div css={Loading}>
+            <p>Loading..</p>
+          </div> */}
+          {isLoading ? (
+            <div css={Loading}>
+              <p>読み込み中</p>
+            </div>
+          ) : (
+            <>
+              <div>
+                <img
+                  src={wearJudgeImg}
+                  alt="Weather Wear"
+                  width={322}
+                  height={322}
+                  css={WearImg}
+                />
+                <p css={WearComment}>
+                  {wearJudgeTxt}
+                  <br />
+                  今日も一日がんばりましょう！
+                </p>
+                <div css={WeatherDetail}>
+                  {area && (
+                    <div css={Area}>
+                      <p>{area}</p>
+                    </div>
+                  )}
+                  <p css={Climate}>
+                    今日の天気は
+                    <span>{wt}</span>
+                  </p>
+                  <ul css={Temp}>
+                    <li>
+                      最高気温
+                      <span>{maxVal}°</span>
+                    </li>
+                    <li>
+                      最低気温
+                      <span>{minVal}°</span>
+                    </li>
+                  </ul>
                 </div>
-              )}
-              <p css={Climate}>
-                今日の天気は
-                <span>{wt}</span>
-              </p>
-              <ul css={Temp}>
-                <li>
-                  最高気温
-                  <span>{maxVal}°</span>
-                </li>
-                <li>
-                  最低気温
-                  <span>{minVal}°</span>
-                </li>
-              </ul>
-            </div>
-            <div css={Graph}>
-              <Line
-                options={chartOptions}
-                data={chartData}
-                width={500}
-                height={400}
-              />
-            </div>
-          </div>
-          <div css={BtnWrap}>
-            <button onClick={() => router.push("/")}>TOP</button>
-          </div>
+                <div css={Graph}>
+                  <Line
+                    options={chartOptions}
+                    data={chartData}
+                    width={500}
+                    height={400}
+                  />
+                </div>
+              </div>
+              <div css={BtnWrap}>
+                <button onClick={() => router.push("/")}>TOP</button>
+              </div>
+            </>
+          )}
         </section>
       </main>
     </>
