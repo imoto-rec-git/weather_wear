@@ -363,9 +363,6 @@ const result = () => {
       </Head>
       <main css={Main}>
         <section css={Section}>
-          {/* <div css={Loading}>
-            <p>Loading..</p>
-          </div> */}
           {isLoading ? (
             <div css={Loading}>
               <p>読み込み中</p>
