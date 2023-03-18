@@ -3,11 +3,14 @@ import Image from "next/image"
 import { css } from "@emotion/react"
 import { useRouter } from "next/router"
 import axios from "axios"
+import { useState } from "react"
 
 export default function Home() {
   const router = useRouter()
+  const [locateLoad, setLocateLoad] = useState(false)
   const handleGetLocation = () => {
     if (typeof navigator !== "undefined" && navigator.geolocation) {
+      setLocateLoad(true)
       navigator.geolocation.getCurrentPosition((position) => {
         const latVal = position.coords.latitude
         const lngVal = position.coords.longitude
@@ -20,10 +23,12 @@ export default function Home() {
             router.push(`/result?pref=${pref}&lat=${latVal}&lng=${lngVal}`)
           })
           .catch((err) => {
+            setLocateLoad(false)
             console.log("Error occurred while fetching data: ", err)
           })
       })
     } else {
+      setLocateLoad(false)
       alert(
         "この端末では位置情報機能が利用できません。「都道府県を選択」から遷移いただくか、位置情報機能をオンにしてください。"
       )
@@ -120,7 +125,6 @@ export default function Home() {
       display: block;
       margin: 0 0 18px;
       width: 100%;
-      padding: 20px 0;
       background: linear-gradient(
         135deg,
         rgba(231, 241, 251, 0.6),
@@ -152,7 +156,8 @@ export default function Home() {
       > span {
         color: #e7f1fb;
         position: relative;
-        padding: 0 0 0 28px;
+        padding: 20px 0 20px 28px;
+        display: inline-block;
         &::before {
           content: "";
           display: inline-block;
@@ -165,7 +170,7 @@ export default function Home() {
             width: 22px;
             height: 22px;
             top: -3px;
-            right: 98px;
+            left: 0;
             background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill="%23e7f1fb" d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" /></svg>')
               no-repeat;
           }
@@ -175,7 +180,7 @@ export default function Home() {
             width: 18px;
             height: 18px;
             top: -1px;
-            right: 100px;
+            left: 2px;
             background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill="%23e7f1fb" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" /></svg>')
               no-repeat;
           }
@@ -208,7 +213,11 @@ export default function Home() {
           </div>
           <div css={BtnWrap}>
             <button onClick={handleGetLocation}>
-              <span className="locate">位置情報を取得</span>
+              {locateLoad ? (
+                <span className="locate">位置情報取得中...</span>
+              ) : (
+                <span className="locate">位置情報を取得</span>
+              )}
             </button>
             <button onClick={() => router.push("/pref")}>
               <span className="search">都道府県を選択</span>
