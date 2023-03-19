@@ -1,7 +1,12 @@
 import { css } from "@emotion/react"
 import { ProductLoacationSelect } from "@/components/organisms/ProductLoacationSelect"
+import { ReactNode } from "react"
 
-export const Layout = () => {
+type Props = {
+  children: ReactNode
+}
+
+export const Layout = ({ children, ...props }: Props) => {
   const Main = css`
     background-color: #a1c6ea;
     position: relative;
@@ -34,8 +39,8 @@ export const Layout = () => {
   `
   return (
     <>
-      <main css={Main}>
-        <ProductLoacationSelect />
+      <main css={Main} {...props}>
+        {children}
       </main>
     </>
   )

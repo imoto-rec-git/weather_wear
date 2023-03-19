@@ -2,6 +2,7 @@ import Head from "next/head"
 import { css } from "@emotion/react"
 import { withRouter } from "next/router"
 import { useState } from "react"
+import { Layout } from "@/components/templates/Layout"
 
 const Pref = ({ router }) => {
   const [selectedPrefecture, setSelectedPrefecture] = useState("")
@@ -248,7 +249,7 @@ const Pref = ({ router }) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main css={Main}>
+      <Layout>
         <section css={Section}>
           <p css={Note}>都道府県を１つ選択してください</p>
           <div css={PrefListWrapper}>
@@ -276,7 +277,7 @@ const Pref = ({ router }) => {
             <button onClick={() => router.push("/")}>TOPへ</button>
           </div>
         </section>
-      </main>
+      </Layout>
     </>
   )
 }
