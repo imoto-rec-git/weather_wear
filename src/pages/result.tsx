@@ -305,6 +305,7 @@ const result = () => {
         content: "";
         margin: auto;
         z-index: -1;
+        opacity: 0.3;
       }
       &.whether__sun {
         &::before {
