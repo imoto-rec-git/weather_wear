@@ -3,7 +3,7 @@ import { withRouter } from "next/router"
 import { Layout } from "@/components/templates/Layout"
 import { ProductPrefectureSelect } from "@/components/organisms/ProductPrefectureSelect"
 
-const Pref = ({ router }) => {
+const Pref = () => {
   return (
     <>
       <Head>
@@ -13,7 +13,7 @@ const Pref = ({ router }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
-        <ProductPrefectureSelect router={router} />
+        <ProductPrefectureSelect />
       </Layout>
     </>
   )
