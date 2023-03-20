@@ -23,6 +23,7 @@ ChartJS.register(
 )
 
 export const TempChart = ({ dataList }: { dataList: number[] }) => {
+  // @ts-ignore
   const chartData = {
     labels: ["0h", "3h", "6h", "9h", "12h", "15h", "18h", "21h"],
     datasets: [
