@@ -7,7 +7,6 @@ import {
   Title,
   Tooltip,
   Legend,
-  ChartOptions,
 } from "chart.js"
 import { Line } from "react-chartjs-2"
 import { css } from "@emotion/react"
@@ -44,7 +43,7 @@ export const TempChart = ({ dataList }: { dataList: number[] }) => {
     padding: 1.2rem;
     border-radius: 0.8rem;
   `
-  const chartOptions: ChartOptions = {
+  const chartOptions = {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
