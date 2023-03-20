@@ -10,6 +10,7 @@ export const Layout = ({ children, ...props }: Props) => {
     background-color: #a1c6ea;
     position: relative;
     min-height: 100vh;
+    min-height: 100dvh;
     overflow: hidden;
     &::before,
     &::after {

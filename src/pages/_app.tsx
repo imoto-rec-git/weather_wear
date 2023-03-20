@@ -43,6 +43,7 @@ export default function App({ Component, pageProps }: AppProps) {
       font-family: "Noto Sans JP", sans-serif;
       color: var(--color-black);
       background-color: var(--color-light-blue);
+      font-display: swap;
     }
 
     a {
@@ -53,6 +54,10 @@ export default function App({ Component, pageProps }: AppProps) {
     img {
       width: 100%;
       height: auto;
+    }
+
+    button {
+      font-family: "Noto Sans JP", sans-serif;
     }
   `
   return (

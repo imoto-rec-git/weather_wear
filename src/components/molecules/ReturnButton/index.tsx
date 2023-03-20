@@ -13,6 +13,8 @@ export const ReturnButton = () => {
       width: 100%;
     }
     button {
+      font-size: var(--font-size-small);
+      font-weight: var(--font-weight-bold);
       position: relative;
       color: #e7f1fb;
       display: block;

@@ -67,6 +67,8 @@ export const UserPositionButton = () => {
       border-radius: inherit;
     }
     > span {
+      font-size: var(--font-size-small);
+      font-weight: var(--font-weight-bold);
       color: #e7f1fb;
       position: relative;
       padding: 20px 0 20px 28px;
