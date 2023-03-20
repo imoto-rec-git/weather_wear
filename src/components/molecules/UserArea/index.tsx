@@ -1,6 +1,6 @@
 import { css } from "@emotion/react"
 
-export const UserArea = ({ userArea }: { userArea: string }) => {
+export const UserArea = ({ userArea }: { userArea?: string }) => {
   const Area = css`
     text-align: center;
     font-size: var(--font-size-small);

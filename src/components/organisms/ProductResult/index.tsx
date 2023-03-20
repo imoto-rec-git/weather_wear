@@ -11,9 +11,21 @@ import { WearComment } from "@/components/molecules/WearComment"
 import { WearImg } from "@/components/molecules/WearImg"
 import { Loading } from "@/components/molecules/Loading"
 
+interface Post {
+  latitude: number
+  longitude: number
+  generationtime_ms: number
+  utc_offset_seconds: number
+  timezone: string
+  timezone_abbreviation: string
+  elevation: number
+  hourly_units: { time: string; temperature_2m: string; weathercode: string }
+  hourly: { time: string[]; temperature_2m: number[]; weathercode: number[] }
+}
+
 export const ProductResult = () => {
-  const [posts, setPosts] = useState(null)
-  const [area, setArea] = useState("")
+  const [posts, setPosts] = useState<Post | null>(null)
+  const [area, setArea] = useState<string | undefined>("")
   const [tempList3h, setTempList3h] = useState<number[]>([])
   const [maxVal, setMaxVal] = useState(0)
   const [minVal, setMinVal] = useState(0)
@@ -25,7 +37,8 @@ export const ProductResult = () => {
   const [isLoading, setIsLoading] = useState(false)
 
   const router = useRouter()
-  const { pref, lat, lng } = router.query
+  const { pref, lat, lng }: { pref?: string; lat?: number; lng?: number } =
+    router.query
 
   useEffect(() => {
     setIsLoading(true)
@@ -123,7 +136,6 @@ export const ProductResult = () => {
     if (posts) {
       setArea(pref)
       const temp_arr: number[] = [...posts.hourly.temperature_2m.slice(0, 24)]
-
       tempListFilter(temp_arr)
       const max_val = Math.max(...tempList3h)
       setMaxVal(max_val)

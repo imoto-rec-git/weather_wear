@@ -13,14 +13,15 @@ export const PrefectureSelect = () => {
   const hendlePrefectureSelect = (event: { target: { value: string } }) => {
     const selectedPrefecture: string = event.target.value
 
-    const selectedPrefectureInfo: selectedPrefectureInfo = prefList
+    const selectedPrefectureInfo: selectedPrefectureInfo | undefined = prefList
       .flatMap((pref) => pref.list)
       .find((item) => item.name === selectedPrefecture)
 
-    const { lat, lng }: { lat: number; lng: number } = selectedPrefectureInfo
-
-    setSelectedPrefecture(selectedPrefecture)
-    router.push(`/result?pref=${selectedPrefecture}&lat=${lat}&lng=${lng}`)
+    if (selectedPrefectureInfo) {
+      const { lat, lng }: { lat: number; lng: number } = selectedPrefectureInfo
+      setSelectedPrefecture(selectedPrefecture)
+      router.push(`/result?pref=${selectedPrefecture}&lat=${lat}&lng=${lng}`)
+    }
   }
 
   const prefList = [
