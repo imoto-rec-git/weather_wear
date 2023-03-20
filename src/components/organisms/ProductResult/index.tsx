@@ -13,15 +13,15 @@ import { Loading } from "@/components/molecules/Loading"
 
 export const ProductResult = () => {
   const [posts, setPosts] = useState(null)
-  const [area, setArea] = useState(null)
-  const [tempList3h, setTempList3h] = useState([])
-  const [maxVal, setMaxVal] = useState(null)
-  const [minVal, setMinVal] = useState(null)
-  const [wcArr, setWcArr] = useState([])
-  const [wc, setWc] = useState(null)
-  const [wt, setWt] = useState(null)
-  const [wearJudgeImg, setWearJudgeImg] = useState(null)
-  const [wearJudgeTxt, setWearJudgeTxt] = useState(null)
+  const [area, setArea] = useState("")
+  const [tempList3h, setTempList3h] = useState<number[]>([])
+  const [maxVal, setMaxVal] = useState(0)
+  const [minVal, setMinVal] = useState(0)
+  const [wcArr, setWcArr] = useState<number[]>([])
+  const [wc, setWc] = useState(0)
+  const [wt, setWt] = useState("")
+  const [wearJudgeImg, setWearJudgeImg] = useState("")
+  const [wearJudgeTxt, setWearJudgeTxt] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
   const router = useRouter()
@@ -43,10 +43,10 @@ export const ProductResult = () => {
       })
   }, [pref, lat, lng])
 
-  const mostValue = (arr) => {
-    let freq = {}
+  const mostValue = (arr: number[]) => {
+    let freq = []
     for (let i = 0; i < arr.length; i++) {
-      let el = arr[i]
+      let el: number = arr[i]
       if (freq[el]) {
         freq[el]++
       } else {
@@ -55,8 +55,8 @@ export const ProductResult = () => {
     }
 
     let maxFreq = 0
-    let mode = null
-    for (let el in freq) {
+    let mode: number = 0
+    for (let el of freq) {
       if (freq[el] > maxFreq) {
         maxFreq = freq[el]
         mode = el
@@ -65,7 +65,7 @@ export const ProductResult = () => {
     return mode
   }
 
-  const weatherText = (code) => {
+  const weatherText = (code: number) => {
     if (code == 0 || code == 1) {
       setWt("晴れ")
     } else if (code == 2 || code == 3) {
@@ -83,7 +83,7 @@ export const ProductResult = () => {
     }
   }
 
-  const wearImgJudge = (maxTemp) => {
+  const wearImgJudge = (maxTemp: number) => {
     if (maxTemp >= 25) {
       setWearJudgeImg("/images/result_1.png")
     } else if (maxTemp >= 16) {
@@ -95,7 +95,7 @@ export const ProductResult = () => {
     }
   }
 
-  const wearTxtJudge = (maxTemp) => {
+  const wearTxtJudge = (maxTemp: number) => {
     if (maxTemp >= 25) {
       setWearJudgeTxt(
         "日差しが暑く、歩くだけで汗ばみがちです。半袖など快適な服装がおすすめです。"
@@ -114,21 +114,22 @@ export const ProductResult = () => {
       )
     }
   }
-  const tempListFilter = (arr) => {
-    const every3hours_arr = arr.filter((_, i) => i % 3 === 0)
+  const tempListFilter = (arr: number[]) => {
+    const every3hours_arr: number[] = arr.filter((_, i) => i % 3 === 0)
     setTempList3h(every3hours_arr)
   }
 
   useEffect(() => {
     if (posts) {
       setArea(pref)
-      const temp_arr = [...posts.hourly.temperature_2m.slice(0, 24)]
+      const temp_arr: number[] = [...posts.hourly.temperature_2m.slice(0, 24)]
+
       tempListFilter(temp_arr)
       const max_val = Math.max(...tempList3h)
       setMaxVal(max_val)
       const min_val = Math.min(...tempList3h)
       setMinVal(min_val)
-      const wc_arr = [...posts.hourly.weathercode.slice(0, 24)]
+      const wc_arr: number[] = [...posts.hourly.weathercode.slice(0, 24)]
       setWcArr(wc_arr)
       setWc(mostValue(wc_arr))
       weatherText(mostValue(wc_arr))
