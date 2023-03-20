@@ -63,12 +63,8 @@ export const TempChart = ({ dataList }: { dataList: number[] }) => {
     plugins: {
       title: {
         display: false,
-        text: false,
       },
       legend: {
-        display: false,
-      },
-      scales: {
         display: false,
       },
     },
