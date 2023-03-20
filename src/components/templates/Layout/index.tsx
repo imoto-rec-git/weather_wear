@@ -17,6 +17,7 @@ export const Layout = ({ children, ...props }: Props) => {
       z-index: 1;
       filter: blur(100px);
       position: absolute;
+      will-change: filter;
     }
     &::before {
       width: 592px;
