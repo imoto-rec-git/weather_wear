@@ -1,6 +1,6 @@
 import { css } from "@emotion/react"
 
-export const WearComment = ({ wearJudgeTxt }) => {
+export const WearComment = ({ wearJudgeTxt }: { wearJudgeTxt: string }) => {
   const Comment = css`
     font-size: var(--font-size-medium);
     margin: 0 0.8rem 1.2rem;

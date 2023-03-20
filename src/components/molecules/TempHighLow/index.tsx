@@ -1,6 +1,8 @@
 import { css } from "@emotion/react"
-
-export const TempHighLow = ({ datas }) => {
+type Datas = {
+  [key: string]: number
+}
+export const TempHighLow = ({ datas }: { datas: Datas }) => {
   const Temp = css`
     font-size: var(--font-size-medium);
     list-style: none;

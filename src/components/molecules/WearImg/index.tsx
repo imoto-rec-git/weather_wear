@@ -1,6 +1,6 @@
 import { css } from "@emotion/react"
 
-export const WearImg = ({ wearJudgeImg }) => {
+export const WearImg = ({ wearJudgeImg }: { wearJudgeImg: string }) => {
   const Img = css`
     width: 100%;
     height: auto;

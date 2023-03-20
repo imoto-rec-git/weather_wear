@@ -1,6 +1,6 @@
 import { css } from "@emotion/react"
 
-export const TodayWeather = ({ weatherData }) => {
+export const TodayWeather = ({ weatherData }: { weatherData: string }) => {
   const Climate = css`
     font-size: var(--font-size-small);
     text-align: center;

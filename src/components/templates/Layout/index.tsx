@@ -1,5 +1,4 @@
 import { css } from "@emotion/react"
-import { ProductLoacationSelect } from "@/components/organisms/ProductLoacationSelect"
 import { ReactNode } from "react"
 
 type Props = {

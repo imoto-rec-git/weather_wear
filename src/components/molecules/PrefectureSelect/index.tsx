@@ -1,17 +1,24 @@
 import { css } from "@emotion/react"
 import { useRouter } from "next/router"
 import { useState } from "react"
-
+type selectedPrefectureInfo = {
+  name: string
+  lat: number
+  lng: number
+}
 export const PrefectureSelect = () => {
   const router = useRouter()
   const [selectedPrefecture, setSelectedPrefecture] = useState("")
 
-  const hendlePrefectureSelect = (event) => {
-    const selectedPrefecture = event.target.value
-    const selectedPrefectureInfo = prefList
+  const hendlePrefectureSelect = (event: { target: { value: string } }) => {
+    const selectedPrefecture: string = event.target.value
+
+    const selectedPrefectureInfo: selectedPrefectureInfo = prefList
       .flatMap((pref) => pref.list)
       .find((item) => item.name === selectedPrefecture)
-    const { lat, lng } = selectedPrefectureInfo
+
+    const { lat, lng }: { lat: number; lng: number } = selectedPrefectureInfo
+
     setSelectedPrefecture(selectedPrefecture)
     router.push(`/result?pref=${selectedPrefecture}&lat=${lat}&lng=${lng}`)
   }
